@@ -131,6 +131,19 @@ define(function (require, exports, module) {
         return;
     };
 
+    /**
+     * returns a Image object from a given img URIs, using CACHE
+     * @returns {Function} Image object
+     */
+    exports.loadImage = function(key) {
+        var img = CACHE[key];
+        if (!img) {
+            // TODO sync image loading
+            throw new Error('Missing "' + key + '", gamejs.preload() all images before trying to load them.');
+        }
+        return img;
+    };
+
     return exports;
 
 });
