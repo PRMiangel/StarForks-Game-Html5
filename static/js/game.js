@@ -11,7 +11,8 @@ require.config({
 require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gamejs, main, globals) {
     // game init
     gamejs.preload([
-        globals.starsField.image
+        globals.starsField.image,
+        globals.player.sprite
     ]);
 
     globals.screenSize = [$('gjs-canvas').attr('width'), $('gjs-canvas').attr('height')];
