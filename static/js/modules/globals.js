@@ -7,7 +7,12 @@ define(function() {
         starsField: {
             image: 'static/images/background/starBackground.png'
         },
-        physics: {
+        player: {
+            sprite: 'static/images/playerSprite.png',
+            width: 99,
+            height: 75,
+            normalStep: 5,
+            damagedStep: 2
         }
     };
 });
