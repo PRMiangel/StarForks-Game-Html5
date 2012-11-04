@@ -6,6 +6,7 @@ define(['gamejs', 'modules/globals', 'modules/stars'], function(gamejs, globals,
         var tick = function(msDuration) {
             // events
             gamejs.event.get().forEach(function(event) {
+                starsField.handle(event);
             });
 
             // update
