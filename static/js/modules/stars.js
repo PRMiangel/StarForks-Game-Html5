@@ -19,6 +19,9 @@ define(['gamejs', 'modules/globals', 'modules/utils'], function(gamejs, globals,
         display.blit(this.surface, this.offset);
     };
 
+    StarsField.prototype.update = function() {
+    };
+
     return {
         StarsField: StarsField
     };

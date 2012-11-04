@@ -9,6 +9,7 @@ define(['gamejs', 'modules/globals', 'modules/stars'], function(gamejs, globals,
             });
 
             // update
+            starsField.update();
 
             // redraw
             display.clear();
