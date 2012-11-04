@@ -1,6 +1,7 @@
-define(['gamejs', 'modules/globals'], function(gamejs, globals) {
+define(['gamejs', 'modules/globals', 'modules/stars'], function(gamejs, globals, stars) {
     return function() {
         var display = gamejs.display.setMode(globals.game.screenSize);
+        var starsField = new stars.StarsField();
 
         var tick = function(msDuration) {
             // events
@@ -11,6 +12,7 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
             // redraw
             display.clear();
+            starsField.draw(display);
         };
 
         gamejs.time.fpsCallback(tick, this, globals.game.fps);
