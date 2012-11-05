@@ -1,4 +1,7 @@
-define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vectors'], function(gamejs, globals, spriteSheet, $v) {
+define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, spriteSheet, utils, $m, $v) {
+
+    var BASE_SPRITE_ORIENTATION = [0, -1];
+
     /*
      * Ship SuperClass.
      * -------------------------------------------------------------------------
@@ -12,8 +15,8 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
 
         // kinematics
         this.position = this.newPosition = position;
-        this.orientation = 0;  // 0 orientation means looking down the y axis (-y). in degrees
         this.velocity = [0, 0];
+        this.orientation = 0;  // 0 orientation means looking down the y axis (-y). in degrees
         this.rotation = 0;
         this.steering = {
             linear: [0, 0],
@@ -25,7 +28,14 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
     gamejs.utils.objects.extend(Ship, gamejs.sprite.Sprite);
 
     Ship.prototype.draw = function(display) {
-        display.blit(this.spriteSheet.get(this.currentSprite), this.position);
+        // first set the orientation
+        var surface = gamejs.transform.rotate(this.spriteSheet.get(this.currentSprite), this.orientation);
+
+        // then draw.
+        display.blit(surface, $v.add(this.position, [-surface.getSize()[0]/2, -surface.getSize()[1]/2]));
+
+        // DEBUG: orientation
+        // gamejs.draw.line(display, '#FFFF00', this.position, this.seeking);
     };
 
     /*
@@ -34,14 +44,13 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
      * -------------------------------------------------------------------------
      */
     var Player = function() {
-        var center = [globals.game.screenSize[0] / 2, (globals.game.screenSize[1] / 2) + 50];
+        var center = [globals.game.screenSize[0] / 2, globals.game.screenSize[1] - 90];
         var spriteSpecs = {
             width: globals.player.width,
             height: globals.player.height
         };
         var args = [].splice.call(arguments, 0);
         Player.superConstructor.apply(this, args.concat([globals.player.sprite, spriteSpecs, center]));
-        this.position[0] -= globals.player.width / 2;
 
         return this;
     };
@@ -67,7 +76,9 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
                 break;
             }
         } else {  // mouse motion
-
+            this.orientation = $m.normaliseDegrees($m.degrees(
+                $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(event.pos, this.position))
+            ));
         }
     };
 
@@ -81,8 +92,9 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
         this.velocity     = this.linearMovement(time);
         this.position     = $v.add(this.position, $v.multiply(this.velocity, time));
 
-        this.rotation    += this.angularMovement(time);
+        this.rotation     = this.angularMovement(time);
         this.orientation += this.rotation * time;
+        this.orientation  = this.orientation % 360;
 
         // also set the sprite according to the current velocity
         if (this.velocity[0] == 0)
@@ -110,7 +122,6 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
             else
                 direction[1] = -1;
 
-        console.log(newVelocity);
         // wind resistance
         newVelocity = $v.add(newVelocity, $v.multiply(direction, globals.physics.windResistance * -1));
         newVelocity[0] = (Math.abs(newVelocity[0]) > globals.physics.windResistance * 0.75 ? newVelocity[0] : 0);
