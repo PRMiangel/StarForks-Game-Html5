@@ -97,21 +97,29 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
 
     Player.prototype.linearMovement = function(time) {
         var newVelocity = $v.add(this.velocity, $v.multiply(this.steering.linear, time));
-        // wind resistance
-        if (newVelocity[0] != 0) {
+        var direction = [0, 0];
+        // direction
+        if (newVelocity[0] != 0)
             if (newVelocity[0] > 0)
-                newVelocity[0] -= globals.physics.windResistance;
+                direction[0] = 1;
             else
-                newVelocity[0] += globals.physics.windResistance;
-            newVelocity[0] = (Math.abs(newVelocity[0]) > globals.physics.windResistance * 0.75 ? newVelocity[0] : 0);
-        }
-        if (newVelocity[1] != 0) {
+                direction[0] = -1;
+        if (newVelocity[1] != 0)
             if (newVelocity[1] > 0)
-                newVelocity[1] -= globals.physics.windResistance;
+                direction[1] = 1;
             else
-                newVelocity[1] += globals.physics.windResistance;
-            newVelocity[1] = (Math.abs(newVelocity[1]) > globals.physics.windResistance * 0.75 ? newVelocity[1] : 0);
-        }
+                direction[1] = -1;
+
+        console.log(newVelocity);
+        // wind resistance
+        newVelocity = $v.add(newVelocity, $v.multiply(direction, globals.physics.windResistance * -1));
+        newVelocity[0] = (Math.abs(newVelocity[0]) > globals.physics.windResistance * 0.75 ? newVelocity[0] : 0);
+        newVelocity[1] = (Math.abs(newVelocity[1]) > globals.physics.windResistance * 0.75 ? newVelocity[1] : 0);
+
+        // max speed
+        newVelocity[0] = (Math.abs(newVelocity[0]) > globals.player.maxSpeed ? (globals.player.maxSpeed * direction[0]) : newVelocity[0]);
+        newVelocity[1] = (Math.abs(newVelocity[1]) > globals.player.maxSpeed ? (globals.player.maxSpeed * direction[1]) : newVelocity[1]);
+
         return newVelocity;
     };
 

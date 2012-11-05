@@ -11,8 +11,9 @@ define(function() {
             sprite: 'static/images/playerSprite.png',
             width: 99,
             height: 75,
-            normalStep: 1000,
-            damagedStep: 2
+            normalStep: 2000,
+            damagedStep: 2,
+            maxSpeed: 500
         },
         physics: {
             windResistance: 15
