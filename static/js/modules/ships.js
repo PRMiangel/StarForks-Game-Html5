@@ -99,7 +99,26 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
             this.currentSprite = 2;
         else
             this.currentSprite = 1;
-    };
+
+        //
+        // map restrictions
+        if (this.position[0] < 0) {
+            this.position[0] = 0;
+            this.velocity[0] *= -0.5;
+        }
+        if (this.position[0] > globals.game.screenSize[0]) {
+            this.position[0] = globals.game.screenSize[0];
+            this.velocity[0] *= -0.5;
+        }
+        if (this.position[1] < 0) {
+            this.position[1] = 0;
+            this.velocity[1] *= -0.5;
+        }
+        if (this.position[1] > globals.game.screenSize[1]) {
+            this.position[1] = globals.game.screenSize[1];
+            this.velocity[1] *= -0.5;
+        }
+   };
 
     Player.prototype.linearMovement = function(time) {
         var newVelocity = $v.add(this.velocity, $v.multiply(this.steering.linear, time));
