@@ -1,5 +1,5 @@
 define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], function(gamejs, globals, utils, $v) {
-    var size  = [globals.game.screenSize[0], Math.ceil(globals.game.screenSize[1] / 256) * 256];
+    var size  = [Math.ceil(globals.game.screenSize[0] / 254) * 254, Math.ceil(globals.game.screenSize[1] / 256) * 256];
 
     /*
      * StarsField.
@@ -15,9 +15,9 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         this.field2.fillPattern(globals.starsField.image);
 
         this.offset1 = [0, 0];
-        this.offset2 = [0, -size[1]];
+        this.offset2 = [size[0], 0];
 
-        this.speed = 2;
+        this.speed = 5;
 
         // clouds
         this.lowerClouds = new Clouds();
@@ -43,13 +43,13 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
     };
 
     StarsField.prototype.update = function(msDuration) {
-        this.offset1[1] += this.speed;
-        this.offset2[1] += this.speed;
+        this.offset1[0] -= this.speed;
+        this.offset2[0] -= this.speed;
 
-        if (this.offset1[1] >= 0)
-            this.offset2[1] = -size[1] + this.offset1[1];
-        if (this.offset2[1] >= 0)
-            this.offset1[1] = -size[1] + this.offset2[1];
+        if (this.offset1[0] <= globals.game.screenSize[0] - size[0])
+            this.offset2[0] = this.offset1[0] + size[0];
+        if (this.offset2[0] <= globals.game.screenSize[0] - size[0])
+            this.offset1[0] = this.offset2[0] + size[0];
 
         var time = msDuration / 1000;
         this.lowerClouds.update(time);
@@ -84,8 +84,8 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
     SpaceObjectCollection.prototype.update = function(time) {
         var self = this;
         this.queue.forEach(function(item) {
-            if (item.position[1] < size[1])
-                item.position[1] += item.speed * time;
+            if (item.position[0] > -100)
+                item.position[0] -= item.speed * time;
             else  // this item is off the screen, better "create" a new one.
                 self.regenerateItem(item);
         });
@@ -110,14 +110,14 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         var cloud = gamejs.image.load(globals.starsField.cloud);
         cloud = gamejs.transform.scale(cloud, $v.multiply(cloud.getSize(), utils.randomBetween(50, 100) / 100));
         cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
-        cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        cloud.position = [Math.random() * size[0] + size[0], Math.random() * size[1] - cloud.getSize()[1] / 2];
         cloud.speed    = Math.random() * this.maxSpeed;
 
         return cloud;
     };
 
     Clouds.prototype.regenerateItem = function(cloud) {
-        cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        cloud.position = [Math.random() * size[0] + size[0], Math.random() * size[1] - cloud.getSize()[1] / 2];
         cloud.speed    = Math.random() * this.maxSpeed;
         cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
     };
@@ -139,13 +139,14 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
 
     Meteors.prototype.generateNewItem = function() {
         var meteor = gamejs.image.load(globals.starsField.meteorBig);
-        meteor.position = [Math.random() * size[0] - meteor.getSize()[0] / 2, Math.random() * size[1] - size[1] - 100];
+        meteor.position = [Math.random() * size[0] + size[0] + 100, Math.random() * size[1] - meteor.getSize()[1] / 2];
         meteor.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
         return meteor;
     };
 
     Meteors.prototype.regenerateItem = function(meteor) {
-        meteor.position = [Math.random() * size[0] - meteor.getSize()[0] / 2, Math.random() * size[1] - size[1] - 100];
+        meteor.position = [Math.random() * size[0] + size[0] + 100, Math.random() * size[1] - meteor.getSize()[1] / 2];
+        // meteor.position = [Math.random() * size[0] - meteor.getSize()[0] / 2, Math.random() * size[1] - size[1] - 100];
         meteor.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
     };
 
@@ -166,13 +167,13 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
 
     DanglingStars.prototype.generateNewItem = function() {
         var star = gamejs.image.load(globals.starsField.starSmall);
-        star.position = [Math.random() * size[0] - star.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        star.position = [Math.random() * size[0] + size[0], Math.random() * size[1] - star.getSize()[1] / 2];
         star.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
         return star;
     };
 
     DanglingStars.prototype.regenerateItem = function(star) {
-        star.position = [Math.random() * size[0] - star.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        star.position = [Math.random() * size[0] + size[0], Math.random() * size[1] - star.getSize()[1] / 2];
         star.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
     };
 
