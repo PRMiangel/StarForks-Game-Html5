@@ -13,8 +13,13 @@ define(['gamejs'], function(gamejs) {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     };
 
+    var sameSign = function(x, y) {
+        return (x * y >= 0);  // this might not work for really big numbers.
+    };
+
     return {
         hypotenuse: hypotenuse,
+        sameSign: sameSign,
         PatternSurface: PatternSurface
     };
 });
