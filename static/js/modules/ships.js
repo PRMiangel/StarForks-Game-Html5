@@ -44,7 +44,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
      * -------------------------------------------------------------------------
      */
     var Player = function() {
-        var center = [globals.game.screenSize[0] / 2, globals.game.screenSize[1] - 90];
+        var center = [90, globals.game.screenSize[1] / 2];
         var spriteSpecs = {
             width: globals.player.width,
             height: globals.player.height
@@ -53,7 +53,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         Player.superConstructor.apply(this, args.concat([globals.player.sprite, spriteSpecs, center]));
 
         this.directions = [0, 0];
-        this.seeking = [this.position[0], 0];
+        this.seeking = [globals.game.screenSize[0], this.position[1]];
 
         return this;
     };
