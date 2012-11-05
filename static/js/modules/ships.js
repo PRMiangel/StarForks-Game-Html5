@@ -53,6 +53,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         Player.superConstructor.apply(this, args.concat([globals.player.sprite, spriteSpecs, center]));
 
         this.directions = [0, 0];
+        this.seeking = [this.position[0], 0];
 
         return this;
     };
@@ -73,9 +74,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
             if (event.key === gamejs.event.K_s) this.directions[1] = 0;
             if (event.key === gamejs.event.K_w) this.directions[1] = 0;
         } else {  // mouse motion
-            this.orientation = $m.normaliseDegrees($m.degrees(
-                $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(event.pos, this.position))
-            ));
+            this.seeking = event.pos;
         }
         this.steering.linear = $v.multiply(this.directions, globals.player.normalStep);
     };
@@ -90,9 +89,8 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         this.velocity     = this.linearMovement(time);
         this.position     = $v.add(this.position, $v.multiply(this.velocity, time));
 
-        this.rotation     = this.angularMovement(time);
-        this.orientation += this.rotation * time;
-        this.orientation  = this.orientation % 360;
+        //this.rotation     = this.angularMovement(time);
+        this.orientation  = this.angularMovement(time) % 360;
 
         // also set the sprite according to the current velocity
         if (this.velocity[0] == 0)
@@ -131,7 +129,10 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
     };
 
     Player.prototype.angularMovement = function(time) {
-        return this.steering.angular * time;
+        return $m.normaliseDegrees($m.degrees(
+            $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(this.seeking, this.position))
+        ));
+        //return this.steering.angular * time;
     };
 
     //
