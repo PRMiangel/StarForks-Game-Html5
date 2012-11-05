@@ -51,49 +51,66 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
 
 
     /*
+     * SpaceObjectCollection.
+     * this is basically an interface for whichever space object that needs to
+     * be generated randomly
+     * -------------------------------------------------------------------------
+     */
+    var SpaceObjectCollection = function(count) {
+        count = count || 10;
+        this.queue = [];
+
+        // seed the objects
+        for (var i = 0; i < count; i++)
+            this.queue.push(this.generateNewItem());
+        return this;
+    };
+
+    SpaceObjectCollection.prototype.draw = function(display) {
+        this.queue.forEach(function(item) {
+            display.blit(item, item.position);
+        });
+    };
+
+    SpaceObjectCollection.prototype.update = function(time) {
+        var self = this;
+        this.queue.forEach(function(item) {
+            if (item.position[1] < size[1])
+                item.position[1] += item.speed * time;
+            else  // this item is off the screen, better "create" a new one.
+                self.regenerateItem(item);
+        });
+    };
+
+
+    /*
      * CloudsField.
      * -------------------------------------------------------------------------
      */
     var Clouds = function(count, alphaRange) {
-        count = count || 10;
-
-        this.queue = [];
         this.maxSpeed = 250;
         this.alphaRange = alphaRange || [0, 1];
 
-        // seed the clouds.
-        for (var i = 0; i < count; i++) {
-            var cloud = gamejs.image.load(globals.starsField.cloud);
-            cloud = gamejs.transform.scale(cloud, $v.multiply(cloud.getSize(), utils.randomBetween(50, 100) / 100));
-            cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
-            cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
-            cloud.speed    = Math.random() * this.maxSpeed;
-
-            this.queue.push(cloud);
-        }
+        Clouds.superConstructor.apply(this, arguments);
 
         return this;
     };
+    gamejs.utils.objects.extend(Clouds, SpaceObjectCollection);
 
-    Clouds.prototype.draw = function(display) {
-        this.queue.forEach(function(cloud) {
-            display.blit(cloud, cloud.position);
-        });
+    Clouds.prototype.generateNewItem = function() {
+        var cloud = gamejs.image.load(globals.starsField.cloud);
+        cloud = gamejs.transform.scale(cloud, $v.multiply(cloud.getSize(), utils.randomBetween(50, 100) / 100));
+        cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
+        cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        cloud.speed    = Math.random() * this.maxSpeed;
+
+        return cloud;
     };
 
-    Clouds.prototype.update = function(time) {
-        var maxSpeed   = this.maxSpeed,
-            alphaRange = this.alphaRange;
-        this.queue.forEach(function(cloud) {
-            if (cloud.position[1] < size[1])
-                cloud.position[1] += cloud.speed * time;
-            else {
-                // this cloud is off the screen, better "create" a new one.
-                cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
-                cloud.speed    = Math.random() * maxSpeed;
-                cloud.setAlpha(utils.randomBetween(alphaRange[0], alphaRange[1], false));
-            }
-        });
+    Clouds.prototype.regenerateItem = function(cloud) {
+        cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        cloud.speed    = Math.random() * this.maxSpeed;
+        cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
     };
 
 
