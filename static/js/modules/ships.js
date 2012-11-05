@@ -52,6 +52,8 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         var args = [].splice.call(arguments, 0);
         Player.superConstructor.apply(this, args.concat([globals.player.sprite, spriteSpecs, center]));
 
+        this.directions = [0, 0];
+
         return this;
     };
     gamejs.utils.objects.extend(Player, Ship);
@@ -60,26 +62,22 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         if (event.type !== gamejs.event.KEY_DOWN && event.type !== gamejs.event.KEY_UP &&
             event.type !== gamejs.event.MOUSE_MOTION)
             return;
-        if (event.type == gamejs.event.KEY_DOWN || event.type == gamejs.event.KEY_UP) {
-            switch(event.key) {
-            case gamejs.event.K_a:
-                this.steering.linear[0] -= globals.player.normalStep;
-                break;
-            case gamejs.event.K_d:
-                this.steering.linear[0] += globals.player.normalStep;
-                break;
-            case gamejs.event.K_w:
-                this.steering.linear[1] -= globals.player.normalStep;
-                break;
-            case gamejs.event.K_s:
-                this.steering.linear[1] += globals.player.normalStep;
-                break;
-            }
+        if (event.type === gamejs.event.KEY_DOWN) {
+            if (event.key === gamejs.event.K_a) this.directions[0] -= 1;
+            if (event.key === gamejs.event.K_d) this.directions[0] += 1;
+            if (event.key === gamejs.event.K_s) this.directions[1] += 1;
+            if (event.key === gamejs.event.K_w) this.directions[1] -= 1;
+        } else if (event.type === gamejs.event.KEY_UP) {
+            if (event.key === gamejs.event.K_a) this.directions[0] = 0;
+            if (event.key === gamejs.event.K_d) this.directions[0] = 0;
+            if (event.key === gamejs.event.K_s) this.directions[1] = 0;
+            if (event.key === gamejs.event.K_w) this.directions[1] = 0;
         } else {  // mouse motion
             this.orientation = $m.normaliseDegrees($m.degrees(
                 $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(event.pos, this.position))
             ));
         }
+        this.steering.linear = $v.multiply(this.directions, globals.player.normalStep);
     };
 
     Player.prototype.update = function(time) {
@@ -103,8 +101,6 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
             this.currentSprite = 2;
         else
             this.currentSprite = 1;
-
-        this.steering.linear = [0, 0];
     };
 
     Player.prototype.linearMovement = function(time) {

@@ -11,7 +11,7 @@ define(function() {
             sprite: 'static/images/playerSprite.png',
             width: 99,
             height: 75,
-            normalStep: 2000,
+            normalStep: 1500,
             damagedStep: 2,
             maxSpeed: 500
         },
