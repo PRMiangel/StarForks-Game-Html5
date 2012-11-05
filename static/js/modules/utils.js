@@ -20,8 +20,12 @@ define(['gamejs'], function(gamejs) {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     };
 
-    var randomBetween = function(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    var randomBetween = function(min, max, integer) {
+        if (typeof(integer)==='undefined') integer = true;
+        var reminder = integer ? 1 : 0;
+        var value = Math.random() * (max - min + reminder);
+        value = integer ? Math.floor(value) : value;
+        return value + min;
     };
 
     var sameSign = function(x, y) {
