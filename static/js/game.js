@@ -12,6 +12,7 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
     // game init
     gamejs.preload([
         globals.starsField.image,
+        globals.starsField.cloud,
         globals.player.sprite
     ]);
 

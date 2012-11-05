@@ -12,7 +12,7 @@ define(['gamejs', 'modules/globals', 'modules/ships', 'modules/stars'], function
             });
 
             // update
-            starsField.update();
+            starsField.update(msDuration);
             player.update(msDuration);
 
             // redraw

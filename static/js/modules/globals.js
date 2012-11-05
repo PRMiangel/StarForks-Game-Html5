@@ -5,7 +5,8 @@ define(function() {
             screenSize: [window.innerWidth-20, window.innerHeight-20]
         },
         starsField: {
-            image: 'static/images/background/starBackground.png'
+            image: 'static/images/background/starBackground.png',
+            cloud: 'static/images/background/nebula.png'
         },
         player: {
             sprite: 'static/images/playerSprite.png',
