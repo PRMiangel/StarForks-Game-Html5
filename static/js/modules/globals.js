@@ -2,7 +2,7 @@ define(function() {
     return {
         game: {
             fps: 36,
-            screenSize: [940, 480]
+            screenSize: [window.innerWidth-20, window.innerHeight-20]
         },
         starsField: {
             image: 'static/images/background/starBackground.png'

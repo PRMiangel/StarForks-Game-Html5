@@ -1,5 +1,5 @@
 define(['gamejs', 'modules/globals', 'modules/utils'], function(gamejs, globals, utils) {
-    var size  = [1016, 512];
+    var size  = [globals.game.screenSize[0], Math.ceil(globals.game.screenSize[1] / 256) * 256];
 
     var StarsField = function() {
         //var size  = utils.hypotenuse(globals.game.screenSize);

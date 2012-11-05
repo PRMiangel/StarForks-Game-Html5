@@ -26,7 +26,4 @@ canvas {
     border-width: 10px;
     border-style: solid;
     position: absolute;
-    left: 50%;
-    margin-left: -480px;
-    margin-top: 20px
 }
