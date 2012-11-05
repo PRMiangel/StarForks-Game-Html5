@@ -48,23 +48,26 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/vecto
     gamejs.utils.objects.extend(Player, Ship);
 
     Player.prototype.handle = function(event) {
-        if (event.type !== gamejs.event.KEY_DOWN ||
-            (event.key !== gamejs.event.K_a && event.key !== gamejs.event.K_d &&
-             event.key !== gamejs.event.K_s && event.key !== gamejs.event.K_w))
+        if (event.type !== gamejs.event.KEY_DOWN && event.type !== gamejs.event.KEY_UP &&
+            event.type !== gamejs.event.MOUSE_MOTION)
             return;
-        switch(event.key) {
-        case gamejs.event.K_a:
-            this.steering.linear[0] -= globals.player.normalStep;
-            break;
-        case gamejs.event.K_d:
-            this.steering.linear[0] += globals.player.normalStep;
-            break;
-        case gamejs.event.K_w:
-            this.steering.linear[1] -= globals.player.normalStep;
-            break;
-        case gamejs.event.K_s:
-            this.steering.linear[1] += globals.player.normalStep;
-            break;
+        if (event.type == gamejs.event.KEY_DOWN || event.type == gamejs.event.KEY_UP) {
+            switch(event.key) {
+            case gamejs.event.K_a:
+                this.steering.linear[0] -= globals.player.normalStep;
+                break;
+            case gamejs.event.K_d:
+                this.steering.linear[0] += globals.player.normalStep;
+                break;
+            case gamejs.event.K_w:
+                this.steering.linear[1] -= globals.player.normalStep;
+                break;
+            case gamejs.event.K_s:
+                this.steering.linear[1] += globals.player.normalStep;
+                break;
+            }
+        } else {  // mouse motion
+
         }
     };
 
