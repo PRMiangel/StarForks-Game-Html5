@@ -17,11 +17,17 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         this.offset1 = [0, 0];
         this.offset2 = [0, -size[1]];
 
-        this.speed = 5;
+        this.speed = 2;
 
         // clouds
         this.lowerClouds = new Clouds();
         this.upperClouds = new Clouds(10, [0.5, 1]);
+
+        // meteors
+        this.meteors = new Meteors(5);
+
+        // dangling stars
+        this.stars = new DanglingStars(30);
 
         return this;
     };
@@ -31,6 +37,7 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         display.blit(this.field2, this.offset2);
 
         this.lowerClouds.draw(display);
+        this.meteors.draw(display);
     };
 
     StarsField.prototype.handle = function(event) {
@@ -45,8 +52,11 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         if (this.offset2[1] >= 0)
             this.offset1[1] = -size[1] + this.offset2[1];
 
-        this.lowerClouds.update(msDuration / 1000);
-        this.upperClouds.update(msDuration / 1000);
+        var time = msDuration / 1000;
+        this.lowerClouds.update(time);
+        this.upperClouds.update(time);
+        this.meteors.update(time);
+        this.stars.update(time);
     };
 
 
@@ -114,10 +124,64 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
     };
 
 
+    /*
+     * Meteor.
+     * -------------------------------------------------------------------------
+     */
+    var Meteors = function(count, alphaRange) {
+        this.maxSpeed = 250;
+        this.speedRange = alphaRange || [0.5, 1];
+
+        Meteors.superConstructor.apply(this, arguments);
+
+        return this;
+    };
+    gamejs.utils.objects.extend(Meteors, SpaceObjectCollection);
+
+    Meteors.prototype.generateNewItem = function() {
+        var meteor = gamejs.image.load(globals.starsField.meteorBig);
+        meteor.position = [Math.random() * size[0] - meteor.getSize()[0] / 2, Math.random() * size[1] - size[1] - 100];
+        meteor.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
+        return meteor;
+    };
+
+    Meteors.prototype.regenerateItem = function(meteor) {
+        meteor.position = [Math.random() * size[0] - meteor.getSize()[0] / 2, Math.random() * size[1] - size[1] - 100];
+        meteor.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
+    };
+
+
+    /*
+     * DanglingStars.
+     * -------------------------------------------------------------------------
+     */
+    var DanglingStars = function(count, alphaRange) {
+        this.maxSpeed = 450;
+        this.speedRange = alphaRange || [0.7, 1];
+
+        DanglingStars.superConstructor.apply(this, arguments);
+
+        return this;
+    };
+    gamejs.utils.objects.extend(DanglingStars, SpaceObjectCollection);
+
+    DanglingStars.prototype.generateNewItem = function() {
+        var star = gamejs.image.load(globals.starsField.starSmall);
+        star.position = [Math.random() * size[0] - star.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        star.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
+        return star;
+    };
+
+    DanglingStars.prototype.regenerateItem = function(star) {
+        star.position = [Math.random() * size[0] - star.getSize()[0] / 2, Math.random() * size[1] - size[1]];
+        star.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
+    };
+
+
+
     //
     // return the API
     return {
-        Clouds: Clouds,
         StarsField: StarsField
     };
 });

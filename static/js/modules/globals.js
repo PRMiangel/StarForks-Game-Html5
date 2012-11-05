@@ -6,7 +6,9 @@ define(function() {
         },
         starsField: {
             image: 'static/images/background/starBackground.png',
-            cloud: 'static/images/background/nebula.png'
+            cloud: 'static/images/background/nebula.png',
+            meteorBig: 'static/images/meteorBig.png',
+            starSmall: 'static/images/background/starSmall.png'
         },
         player: {
             sprite: 'static/images/playerSprite.png',

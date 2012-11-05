@@ -13,6 +13,8 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
     gamejs.preload([
         globals.starsField.image,
         globals.starsField.cloud,
+        globals.starsField.meteorBig,
+        globals.starsField.starSmall,
         globals.player.sprite
     ]);
 
