@@ -5,6 +5,13 @@ define(['gamejs'], function(gamejs) {
         this.fill(this.context.createPattern(image, 'repeat'));
     };
 
+    var basisChange = function(ux, uy, v) {
+        return [
+            ux[0] * v[0] + uy[0] * v[1],
+            ux[1] * v[0] + uy[1] * v[1]
+        ];
+    };
+
     var hypotenuse = function() {
         if (arguments.length == 1)
             arguments = arguments[0];
@@ -18,6 +25,7 @@ define(['gamejs'], function(gamejs) {
     };
 
     return {
+        basisChange: basisChange,
         hypotenuse: hypotenuse,
         sameSign: sameSign,
         PatternSurface: PatternSurface
