@@ -20,14 +20,17 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         this.speed = 5;
 
         // clouds
-        this.clouds = new Clouds();
+        this.lowerClouds = new Clouds();
+        this.upperClouds = new Clouds(10, [0.5, 1]);
+
+        return this;
     };
 
     StarsField.prototype.draw = function(display) {
         display.blit(this.field1, this.offset1);
         display.blit(this.field2, this.offset2);
 
-        this.clouds.draw(display);
+        this.lowerClouds.draw(display);
     };
 
     StarsField.prototype.handle = function(event) {
@@ -42,7 +45,8 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         if (this.offset2[1] >= 0)
             this.offset1[1] = -size[1] + this.offset2[1];
 
-        this.clouds.update(msDuration / 1000);
+        this.lowerClouds.update(msDuration / 1000);
+        this.upperClouds.update(msDuration / 1000);
     };
 
 
@@ -50,18 +54,18 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
      * CloudsField.
      * -------------------------------------------------------------------------
      */
-    var Clouds = function(count) {
-        count = count || 20;
+    var Clouds = function(count, alphaRange) {
+        count = count || 10;
 
         this.queue = [];
         this.maxSpeed = 250;
-        this.maxAlpha = 1;
+        this.alphaRange = alphaRange || [0, 1];
 
         // seed the clouds.
         for (var i = 0; i < count; i++) {
             var cloud = gamejs.image.load(globals.starsField.cloud);
             cloud = gamejs.transform.scale(cloud, $v.multiply(cloud.getSize(), utils.randomBetween(50, 100) / 100));
-            cloud.setAlpha(Math.random() * this.maxAlpha);
+            cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
             cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
             cloud.speed    = Math.random() * this.maxSpeed;
 
@@ -78,8 +82,8 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
     };
 
     Clouds.prototype.update = function(time) {
-        var maxSpeed = this.maxSpeed,
-            maxAlpha = this.maxAlpha;
+        var maxSpeed   = this.maxSpeed,
+            alphaRange = this.alphaRange;
         this.queue.forEach(function(cloud) {
             if (cloud.position[1] < size[1])
                 cloud.position[1] += cloud.speed * time;
@@ -87,7 +91,7 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
                 // this cloud is off the screen, better "create" a new one.
                 cloud.position = [Math.random() * size[0] - cloud.getSize()[0] / 2, Math.random() * size[1] - size[1]];
                 cloud.speed    = Math.random() * maxSpeed;
-                cloud.setAlpha(Math.random() * maxAlpha);
+                cloud.setAlpha(utils.randomBetween(alphaRange[0], alphaRange[1], false));
             }
         });
     };
@@ -96,6 +100,7 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
     //
     // return the API
     return {
+        Clouds: Clouds,
         StarsField: StarsField
     };
 });

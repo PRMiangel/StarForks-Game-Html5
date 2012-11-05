@@ -19,6 +19,7 @@ define(['gamejs', 'modules/globals', 'modules/ships', 'modules/stars'], function
             display.clear();
             starsField.draw(display);
             player.draw(display);
+            starsField.upperClouds.draw(display);
         };
 
         gamejs.time.fpsCallback(tick, this, globals.game.fps);
