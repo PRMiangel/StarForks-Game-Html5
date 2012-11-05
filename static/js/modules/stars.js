@@ -37,7 +37,6 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         display.blit(this.field2, this.offset2);
 
         this.lowerClouds.draw(display);
-        this.meteors.draw(display);
     };
 
     StarsField.prototype.handle = function(event) {

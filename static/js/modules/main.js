@@ -18,7 +18,10 @@ define(['gamejs', 'modules/globals', 'modules/ships', 'modules/stars'], function
             // redraw
             display.clear();
             starsField.draw(display);
+
             player.draw(display);
+
+            starsField.meteors.draw(display);
             starsField.upperClouds.draw(display);
             starsField.stars.draw(display);
         };
