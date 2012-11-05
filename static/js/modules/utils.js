@@ -20,6 +20,10 @@ define(['gamejs'], function(gamejs) {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     };
 
+    var randomBetween = function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
     var sameSign = function(x, y) {
         return (x * y >= 0);  // this might not work for really big numbers.
     };
@@ -27,6 +31,7 @@ define(['gamejs'], function(gamejs) {
     return {
         basisChange: basisChange,
         hypotenuse: hypotenuse,
+        randomBetween: randomBetween,
         sameSign: sameSign,
         PatternSurface: PatternSurface
     };
