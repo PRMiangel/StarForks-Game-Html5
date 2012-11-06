@@ -93,9 +93,9 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         this.orientation  = this.angularMovement(time) % 360;
 
         // also set the sprite according to the current velocity
-        if (this.velocity[0] == 0)
+        if (this.velocity[1] == 0)
             this.currentSprite = 0;
-        else if (this.velocity[0] > 0)
+        else if (this.velocity[1] > 0)
             this.currentSprite = 2;
         else
             this.currentSprite = 1;
