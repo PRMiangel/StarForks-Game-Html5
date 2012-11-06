@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/ships',  'modules/ai/levels'], function(gamejs, ships, levels) {
+define(['underscore', 'gamejs', 'modules/ships',  'modules/ai/levels'], function(_, gamejs, ships, levels) {
     /*
      * What the world needs to control:
      * 1. updating levels
@@ -11,8 +11,9 @@ define(['gamejs', 'modules/ships',  'modules/ai/levels'], function(gamejs, ships
         this.player = player;
         this.currentLevel = 0;
         this.currentTime  = 0;
-        this.enemies = new gamejs.sprite.Group();
-        this.bullets = new gamejs.sprite.Group();  // only enemy bullets
+        this.enemies  = new gamejs.sprite.Group();
+        this.bullets  = new gamejs.sprite.Group();  // only enemies' bullets
+        this.powerups = new gamejs.sprite.Group();
 
         levels.init();
         this.level = levels.get(this.currentLevel);
@@ -42,7 +43,13 @@ define(['gamejs', 'modules/ships',  'modules/ai/levels'], function(gamejs, ships
         this.enemies.update(msDuration);
         // update powerups.
 
-        // check collisions
+        // check collisions (first powerups, then everything else)
+        // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
+        _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
+            //this.player.getDamage();
+            enemy.kill();  //this.enemy.getDamage();
+        });
+        // var bulletsCollides  = gamejs.sprite.spriteCollide(this.player, this.bullets, true);
 
         // update score.
     };

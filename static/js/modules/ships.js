@@ -29,13 +29,16 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
 
     Ship.prototype.draw = function(display) {
         // first set the orientation
-        var surface = gamejs.transform.rotate(this.spriteSheet.get(this.currentSprite), this.orientation);
 
         // then draw.
-        display.blit(surface, $v.add(this.position, [-surface.getSize()[0]/2, -surface.getSize()[1]/2]));
+        display.blit(this.surface, $v.add(this.position, [-this.surface.getSize()[0]/2, -this.surface.getSize()[1]/2]));
 
         // DEBUG: orientation
         // gamejs.draw.line(display, '#FFFF00', this.position, this.seeking);
+        // gamejs.draw.line(display, '#FF0000', this.rect.topleft, this.rect.topright);
+        // gamejs.draw.line(display, '#FF0000', this.rect.topleft, this.rect.bottomleft);
+        // gamejs.draw.line(display, '#FF0000', this.rect.bottomleft, this.rect.bottomright);
+        // gamejs.draw.line(display, '#FF0000', this.rect.bottomright, this.rect.topright);
     };
 
     /*
@@ -55,9 +58,28 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         this.directions = [0, 0];
         this.seeking = [globals.game.screenSize[0], this.position[1]];
 
+        this.rect = new gamejs.Rect(center, [globals.player.width-15, globals.player.width-15]);
+        this.surface = this.spriteSheet.get(this.currentSprite);
+        this.mask = gamejs.mask.fromSurface(this.surface);
+
+        // life
+        this.lifes = 4;
+        this.untouchable = 0;
+        this.hit = false;
+
         return this;
     };
     gamejs.utils.objects.extend(Player, Ship);
+
+    Player.prototype.getDamage = function() {
+        if (this.untouchable > 0)
+            return;
+        this.life--;
+        if (this.life < 0)
+            this.kill();
+        this.untouchable = 3000;
+        this.hit = true;
+    };
 
     Player.prototype.handle = function(event) {
         if (event.type !== gamejs.event.KEY_DOWN && event.type !== gamejs.event.KEY_UP &&
@@ -83,6 +105,11 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         // analyze restrictions. decision making process. kinematic algorithms
 
         //
+        // manage life
+        this.untouchable -= time;
+        this.hit = false;
+
+        //
         // kinematics
         time = time / 1000;
 
@@ -92,6 +119,8 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         //this.rotation     = this.angularMovement(time);
         this.orientation  = this.angularMovement(time) % 360;
 
+        this.rect.center  = this.position;
+
         // also set the sprite according to the current velocity
         if (this.velocity[1] == 0)
             this.currentSprite = 0;
@@ -99,6 +128,11 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
             this.currentSprite = 2;
         else
             this.currentSprite = 1;
+
+        //
+        // update the surface
+        this.surface = gamejs.transform.rotate(this.spriteSheet.get(this.currentSprite), this.orientation);
+        this.mask = gamejs.mask.fromSurface(this.surface);
 
         //
         // map restrictions

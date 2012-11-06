@@ -8,7 +8,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/uti
         // basics...
         this.originalImg = gamejs.image.load(globals.enemies.images.meteor);
         this.image = this.originalImg;
-        this.rect  = new gamejs.Rect(position);
+        this.rect  = new gamejs.Rect(position, this.image.getSize());
+        this.mask  = gamejs.mask.fromSurface(this.image);
 
         // this ones might vary according to the level, but are common to every
         // enemy sprite.
@@ -25,9 +26,9 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/uti
     Meteor.prototype.update = function(msDuration) {
         var time = msDuration / 1000;
         this.orientation += this.rotation * time;
-        this.image = gamejs.transform.rotate(this.originalImg, this.orientation);
+        //this.image = gamejs.transform.rotate(this.originalImg, this.orientation);
 
-        this.rect.center = [this.rect.center[0] - this.speed * time, this.rect.center[1]];
+        this.rect.left -= this.speed * time;
 
         if (this.rect.center[0] < -200) this.kill();
     };
