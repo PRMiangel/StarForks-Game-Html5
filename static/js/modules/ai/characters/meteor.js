@@ -6,8 +6,9 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/uti
         Meteor.superConstructor.apply(this, arguments);
 
         // basics...
-        this.image = gamejs.image.load(globals.enemies.images.meteor);
-        this.rect  = new gamejs.Rect(position, this.image.getSize());
+        this.originalImg = gamejs.image.load(globals.enemies.images.meteor);
+        this.image = this.originalImg;
+        this.rect  = new gamejs.Rect(position);
 
         // this ones might vary according to the level, but are common to every
         // enemy sprite.
@@ -17,19 +18,18 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/uti
 
         // and this ones only make sense for a meteor.
         this.orientation = Math.random() * Math.PI * 2;
-        this.rotation = 75;
+        this.rotation = -12 + Math.random() * 20;
     };
     gamejs.utils.objects.extend(Meteor, enemy.Enemy);
 
     Meteor.prototype.update = function(msDuration) {
         var time = msDuration / 1000;
-        this.rect.left -= this.speed * time;
-
         this.orientation += this.rotation * time;
+        this.image = gamejs.transform.rotate(this.originalImg, this.orientation);
 
-        if (this.rect.right < 0) this.kill();
+        this.rect.center = [this.rect.center[0] - this.speed * time, this.rect.center[1]];
 
-//        this.image = gamejs.transform.rotate(this.image, this.orientation);
+        if (this.rect.center[0] < -200) this.kill();
     };
 
 
