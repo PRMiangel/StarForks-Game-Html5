@@ -7,7 +7,6 @@ define(function() {
         starsField: {
             image: 'static/images/background/starBackground.png',
             cloud: 'static/images/background/nebula.png',
-            meteorBig: 'static/images/meteorBig.png',
             starSmall: 'static/images/background/starSmall.png'
         },
         player: {
@@ -17,6 +16,11 @@ define(function() {
             normalStep: 1500,
             damagedStep: 2,
             maxSpeed: 500
+        },
+        enemies: {
+            images: {
+                meteor: 'static/images/meteorBig.png'
+            }
         },
         physics: {
             windResistance: 15
