@@ -11,6 +11,8 @@ define(function() {
         },
         player: {
             sprite: 'static/images/playerSprite.png',
+            lifeSprite: 'static/images/life.png',
+            defaultLifes: 4,
             width: 99,
             height: 75,
             normalStep: 1500,
