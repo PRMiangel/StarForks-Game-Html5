@@ -23,9 +23,6 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         this.lowerClouds = new Clouds();
         this.upperClouds = new Clouds(10, [0.5, 1]);
 
-        // meteors
-        this.meteors = new Meteors(5);
-
         // dangling stars
         this.stars = new DanglingStars(30);
 
@@ -54,7 +51,6 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         var time = msDuration / 1000;
         this.lowerClouds.update(time);
         this.upperClouds.update(time);
-        this.meteors.update(time);
         this.stars.update(time);
     };
 
@@ -86,7 +82,7 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         this.queue.forEach(function(item) {
             if (item.position[0] > -100)
                 item.position[0] -= item.speed * time;
-            else  // this item is off the screen, better "create" a new one.
+            else
                 self.regenerateItem(item);
         });
     };
@@ -120,34 +116,6 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
         cloud.position = [Math.random() * size[0] + size[0], Math.random() * size[1] - cloud.getSize()[1] / 2];
         cloud.speed    = Math.random() * this.maxSpeed;
         cloud.setAlpha(utils.randomBetween(this.alphaRange[0], this.alphaRange[1], false));
-    };
-
-
-    /*
-     * Meteor.
-     * -------------------------------------------------------------------------
-     */
-    var Meteors = function(count, alphaRange) {
-        this.maxSpeed = 250;
-        this.speedRange = alphaRange || [0.5, 1];
-
-        Meteors.superConstructor.apply(this, arguments);
-
-        return this;
-    };
-    gamejs.utils.objects.extend(Meteors, SpaceObjectCollection);
-
-    Meteors.prototype.generateNewItem = function() {
-        var meteor = gamejs.image.load(globals.starsField.meteorBig);
-        meteor.position = [Math.random() * size[0] + size[0] + 100, Math.random() * size[1] - meteor.getSize()[1] / 2];
-        meteor.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
-        return meteor;
-    };
-
-    Meteors.prototype.regenerateItem = function(meteor) {
-        meteor.position = [Math.random() * size[0] + size[0] + 100, Math.random() * size[1] - meteor.getSize()[1] / 2];
-        // meteor.position = [Math.random() * size[0] - meteor.getSize()[0] / 2, Math.random() * size[1] - size[1] - 100];
-        meteor.speed    = utils.randomBetween(this.speedRange[0], this.speedRange[1], false) * this.maxSpeed;
     };
 
 
