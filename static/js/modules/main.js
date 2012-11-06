@@ -4,6 +4,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/sh
         var starsField = new stars.StarsField();
         var world = new $w.World(new ships.Player());
 
+        screen.init();
+
         var tick = function(msDuration) {
             // events
             _.each(gamejs.event.get(), function(event) {
@@ -17,7 +19,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/sh
             // update
             starsField.update(msDuration);
             world.update(msDuration);
-            screen.update(msDuration);
+            screen.update(msDuration, world);
 
             // redraw
             display.clear();
@@ -28,7 +30,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/sh
             starsField.upperClouds.draw(display);
             starsField.stars.draw(display);
 
-            screen.draw();
+            screen.draw(display);
         };
 
         gamejs.time.fpsCallback(tick, this, globals.game.fps);
