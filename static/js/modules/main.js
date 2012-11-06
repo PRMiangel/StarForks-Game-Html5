@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals', 'modules/ships',  'modules/stars', 'modules/world'], function(gamejs, globals, ships, stars, $w) {
+define(['underscore', 'gamejs', 'modules/globals', 'modules/ships',  'modules/stars', 'modules/world'], function(_, gamejs, globals, ships, stars, $w) {
     return function() {
         var display = gamejs.display.setMode(globals.game.screenSize);
         var starsField = new stars.StarsField();
@@ -6,7 +6,7 @@ define(['gamejs', 'modules/globals', 'modules/ships',  'modules/stars', 'modules
 
         var tick = function(msDuration) {
             // events
-            gamejs.event.get().forEach(function(event) {
+            _.each(gamejs.event.get(), function(event) {
                 //starsField.handle(event);
                 world.handle(event);
             });

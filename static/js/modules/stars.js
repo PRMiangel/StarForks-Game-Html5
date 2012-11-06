@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], function(gamejs, globals, utils, $v) {
+define(['underscore', 'gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], function(_, gamejs, globals, utils, $v) {
     var size  = [Math.ceil(globals.game.screenSize[0] / 254) * 254, Math.ceil(globals.game.screenSize[1] / 256) * 256];
 
     /*
@@ -72,14 +72,14 @@ define(['gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], f
     };
 
     SpaceObjectCollection.prototype.draw = function(display) {
-        this.queue.forEach(function(item) {
+        _.each(this.queue, function(item) {
             display.blit(item, item.position);
         });
     };
 
     SpaceObjectCollection.prototype.update = function(time) {
         var self = this;
-        this.queue.forEach(function(item) {
+        _.each(this.queue, function(item) {
             if (item.position[0] > -100)
                 item.position[0] -= item.speed * time;
             else
