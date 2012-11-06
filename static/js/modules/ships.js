@@ -63,7 +63,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         this.mask = gamejs.mask.fromSurface(this.surface);
 
         // life
-        this.lifes = 4;
+        this.lifes = globals.player.defaultLifes;
         this.untouchable = 0;
         this.hit = false;
 
@@ -74,9 +74,10 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
     Player.prototype.getDamage = function() {
         if (this.untouchable > 0)
             return;
-        this.life--;
-        if (this.life < 0)
+        this.lifes--;
+        if (this.lifes < 0) {
             this.kill();
+        }
         this.untouchable = 3000;
         this.hit = true;
     };
@@ -107,7 +108,6 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
         //
         // manage life
         this.untouchable -= time;
-        this.hit = false;
 
         //
         // kinematics
