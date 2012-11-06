@@ -44,9 +44,10 @@ define(['underscore', 'gamejs', 'modules/ships',  'modules/ai/levels'], function
         // update powerups.
 
         // check collisions (first powerups, then everything else)
+        var self = this;
         // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
         _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
-            //this.player.getDamage();
+            self.player.getDamage();
             enemy.kill();  //this.enemy.getDamage();
         });
         // var bulletsCollides  = gamejs.sprite.spriteCollide(this.player, this.bullets, true);
