@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], function(_, gamejs, globals, utils, $v) {
+define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/vectors'], function(_, gamejs, globals, utils, $v) {
     var size  = [Math.ceil(globals.game.screenSize[0] / 254) * 254, Math.ceil(globals.game.screenSize[1] / 256) * 256];
 
     /*

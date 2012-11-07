@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/utils', 'gamejs/utils/vectors'], function(gamejs, enemy, globals, utils, $v) {
+define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/vectors'], function(gamejs, enemy, globals, utils, $v) {
     /*
      * Meteor.
      */
