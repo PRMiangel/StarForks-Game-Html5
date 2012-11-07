@@ -1,8 +1,8 @@
-define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/player',  'modules/stars', 'modules/world'], function(_, gamejs, globals, screen, $p, stars, $w) {
+define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/stars', 'modules/world'], function(_, gamejs, globals, screen, stars, $w) {
     return function() {
         var display = gamejs.display.setMode(globals.game.screenSize);
         var starsField = new stars.StarsField();
-        var world = new $w.World(new $p.Player());
+        var world = new $w.World();
 
         screen.init();
 

@@ -8,7 +8,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player'], function
      */
 
     var World = function(player) {
-        this.player = player;
+        this.player = new $p.Player();
         this.currentLevel = 0;
         this.currentTime  = 0;
         this.enemies  = new gamejs.sprite.Group();
