@@ -44,6 +44,11 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
         this.hit = false;
         this.hitAnimation = undefined;
 
+        // fire
+        this.firing = false;
+        this.lasers = new gamejs.sprite.Group();
+        this.fireRate = 0;
+
         return this;
     };
     gamejs.utils.objects.extend(Player, gamejs.sprite.Sprite);
@@ -58,7 +63,10 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
                 this.surface.setAlpha(1);
         }
 
-        // just draw.
+        // draw the lasers
+        this.lasers.draw(display);
+
+        // draw the player.
         display.blit(this.surface, $v.add(this.position, [-this.surface.getSize()[0]/2, -this.surface.getSize()[1]/2]));
 
         // DEBUG: orientation
@@ -71,6 +79,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
 
     Player.prototype.handle = function(event) {
         if (event.type !== gamejs.event.KEY_DOWN && event.type !== gamejs.event.KEY_UP &&
+            event.type !== gamejs.event.MOUSE_DOWN && event.type !== gamejs.event.MOUSE_UP &&
             event.type !== gamejs.event.MOUSE_MOTION)
             return;
         if (event.type === gamejs.event.KEY_DOWN) {
@@ -83,18 +92,23 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
             if (event.key === gamejs.event.K_d) this.directions[0] = 0;
             if (event.key === gamejs.event.K_s) this.directions[1] = 0;
             if (event.key === gamejs.event.K_w) this.directions[1] = 0;
+        } else if (event.type === gamejs.event.MOUSE_DOWN) {
+            this.firing = true;
+        } else if (event.type === gamejs.event.MOUSE_UP) {
+            this.firing = false;
+            this.fireRate = 0;
         } else {  // mouse motion
             this.seeking = event.pos;
         }
         this.steering.linear = $v.multiply(this.directions, globals.player.normalStep);
     };
 
-    Player.prototype.update = function(time) {
+    Player.prototype.update = function(msDuration) {
         // analyze restrictions. decision making process. kinematic algorithms
 
         //
         // manage life
-        this.untouchable -= time;
+        this.untouchable -= msDuration;
         if (this.isUntouchable())
             this.hitAnimation = !this.hitAnimation;
         else
@@ -102,7 +116,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
 
         //
         // kinematics
-        time = time / 1000;
+        var time = msDuration / 1000;
 
         this.velocity     = this.linearMovement(time);
         this.position     = $v.add(this.position, $v.multiply(this.velocity, time));
@@ -144,7 +158,18 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
             this.position[1] = globals.game.screenSize[1];
             this.velocity[1] *= -0.5;
         }
-   };
+
+        //
+        // firing
+        if (this.firing) {
+            this.fireRate -= msDuration;
+            if (this.fireRate < 0) {
+                this.fireRate = 1000 / globals.game.fps * 2;
+                this.lasers.add(new Laser(this.position, this.orientation));
+            }
+        }
+        this.lasers.update();
+    };
 
     Player.prototype.linearMovement = function(time) {
         var newVelocity = $v.add(this.velocity, $v.multiply(this.steering.linear, time));
@@ -153,13 +178,13 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
         if (newVelocity[0] != 0)
             if (newVelocity[0] > 0)
                 direction[0] = 1;
-            else
-                direction[0] = -1;
+        else
+            direction[0] = -1;
         if (newVelocity[1] != 0)
             if (newVelocity[1] > 0)
                 direction[1] = 1;
-            else
-                direction[1] = -1;
+        else
+            direction[1] = -1;
 
         // wind resistance
         newVelocity = $v.add(newVelocity, $v.multiply(direction, globals.physics.windResistance * -1));
@@ -194,6 +219,82 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
     Player.prototype.isUntouchable = function() {
         return this.untouchable > 0;
     };
+
+
+    /*
+     * Laser.
+     * just some orientated laser shooted by the player.
+     * -------------------------------------------------------------------------
+     */
+    var Laser = function(position, orientation) {
+        // call superconstructor
+        Laser.superConstructor.apply(this, arguments);
+
+        this.image = gamejs.image.load(globals.player.laserSprite);
+        this.orientation = $m.normaliseRadians(orientation);  // radians
+        this.speed = 125;
+        this.origin = position;
+
+        // laser image
+        this.image = gamejs.transform.rotate(this.image, $m.degrees(this.orientation));
+        var size = this.image.getSize();
+        this.rect = new gamejs.Rect($v.add(position, [-size[0] / 2, -size[1]/2]), size);
+
+        // speed line image
+        var speedLineImg = gamejs.image.load(globals.player.speedSprite);
+        this.speedLineVerticalSize = speedLineImg.getSize()[1];
+        this.speedLine = new gamejs.Surface($v.add(speedLineImg.getSize(), [0, size[1]]));
+        this.speedLine.blit(speedLineImg, [0, size[1]]);
+        this.speedLine = gamejs.transform.rotate(this.speedLine, $m.degrees(this.orientation));
+        if (this.orientation >= 0 && this.orientation < Math.PI / 2) this.speedLineCorner = ['top', 'right'];
+        else if (this.orientation >= Math.PI / 2 && this.orientation < Math.PI) this.speedLineCorner = ['bottom', 'right'];
+        else if (this.orientation >= Math.PI && this.orientation < 3 * Math.PI / 2) this.speedLineCorner = ['bottom', 'left'];
+        else this.speedLineCorner = ['top', 'left'];
+        this.speedRect = new gamejs.Rect([0, 0], this.speedLine.getSize());
+        this.speedRect[this.speedLineCorner] = this.rect[this.speedLineCorner];
+        this.speedLine.setAlpha(1);
+    };
+    gamejs.utils.objects.extend(Laser, gamejs.sprite.Sprite);
+
+    Laser.prototype.draw = function(display) {
+        // speedline
+        display.blit(this.speedLine, this.speedRect.topleft);
+
+        // laser
+        display.blit(this.image, this.rect.topleft);
+
+        // gamejs.draw.line(display, '#FF0000', this.speedRect.topleft, this.speedRect.topright);
+        // gamejs.draw.line(display, '#FF0000', this.speedRect.topleft, this.speedRect.bottomleft);
+        // gamejs.draw.line(display, '#FF0000', this.speedRect.bottomleft, this.speedRect.bottomright);
+        // gamejs.draw.line(display, '#FF0000', this.speedRect.bottomright, this.speedRect.topright);
+
+        // gamejs.draw.line(display, '#FFFF00', this.rect.topleft, this.rect.topright);
+        // gamejs.draw.line(display, '#FFFF00', this.rect.topleft, this.rect.bottomleft);
+        // gamejs.draw.line(display, '#FFFF00', this.rect.bottomleft, this.rect.bottomright);
+        // gamejs.draw.line(display, '#FFFF00', this.rect.bottomright, this.rect.topright);
+
+        return;
+    };
+
+    Laser.prototype.update = function(msDuration) {
+        var time = msDuration / 1000;
+
+        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2);
+        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2);
+        this.speedRect[this.speedLineCorner[0]] = this.rect[this.speedLineCorner[0]];
+        this.speedRect[this.speedLineCorner[1]] = this.rect[this.speedLineCorner[1]];
+
+        if (this.rect.center[0] > globals.game.screenSize[0] + this.speedLine.getSize() || this.rect.center[0] < - this.speedLine.getSize() ||
+            this.rect.center[1] > globals.game.screenSize[1] + this.speedLine.getSize() || this.rect.center[1] < - this.speedLine.getSize())
+            this.kill();
+
+        if (this.speedLine.getAlpha() > 0) {
+            var alpha = 1 - Math.abs($v.distance(this.origin, this.speedRect.center)) / (this.speedLineVerticalSize * 3);
+            alpha = alpha < 0 ? 0 : alpha;
+            this.speedLine.setAlpha(alpha);
+        }
+    };
+
 
     //
     // Return API

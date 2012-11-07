@@ -16,6 +16,8 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         globals.starsField.starSmall,
         globals.player.sprite,
         globals.player.lifeSprite,
+        globals.player.laserSprite,
+        globals.player.speedSprite,
         globals.enemies.images.meteor
     ]);
 

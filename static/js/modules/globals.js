@@ -12,6 +12,8 @@ define(function() {
         player: {
             sprite: 'static/images/playerSprite.png',
             lifeSprite: 'static/images/life.png',
+            laserSprite: 'static/images/laserGreen.png',
+            speedSprite: 'static/images/background/speedLine.png',
             defaultLifes: 4,
             width: 99,
             height: 75,
