@@ -3,21 +3,24 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
             hit: new gamejs.Surface(globals.game.screenSize)
         },
-        paused = false,
-        playerLifes = globals.player.defaultLifes,
         playerHit,
         lifeSprite;
 
     /*
      * Draws every little detail in the screen.
      */
-    var draw = function(display) {
+    var draw = function(display, world) {
+        if (world.gameOver) {
+            // draw the gameover screen
+            return;
+        }
+
         // clear everything
         for (var key in surfaces)
             surfaces[key].clear();
 
         // lifes
-        for (var i = 0; i < playerLifes; i++)
+        for (var i = 0; i < world.player.lifes; i++)
             surfaces.lifes.blit(lifeSprite, [i * 40, 0]);
 
         // hit flash
@@ -30,9 +33,6 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
         display.blit(surfaces.hit);
-    };
-
-    var handle = function(event, display) {
     };
 
     /*
@@ -51,12 +51,10 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     /*
      * Unpauses and destroys the pause screen
      */
-    var unPause = function(display) {
+    var unpause = function(display) {
     };
 
     var update = function(msDuration, world) {
-        playerLifes = world.player.lifes;
-
         if (playerHit)
             playerHit = false;
         else if (playerHit === false)
@@ -71,9 +69,9 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
     return {
         draw: draw,
-        handle: handle,
         init: init,
-        paused: paused,
+        pause: pause,
+        unpause: unpause,
         update: update
     };
 });

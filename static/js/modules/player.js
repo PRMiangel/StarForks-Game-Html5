@@ -73,12 +73,10 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         if (this.untouchable > 0)
             return;
         this.lifes--;
-        if (this.lifes < 0) {
-            this.kill();
-        }
         this.untouchable = 1000;
         this.hit = true;
         this.hitAnimation = true;
+        return (this.lifes < 0);
     };
 
     Player.prototype.handle = function(event) {

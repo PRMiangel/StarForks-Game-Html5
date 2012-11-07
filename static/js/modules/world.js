@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player'], function(_, gamejs, levels, $p) {
+define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/player'], function(_, gamejs, screen, levels, $p) {
     /*
      * What the world needs to control:
      * 1. updating levels
@@ -14,6 +14,8 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player'], function
         this.enemies  = new gamejs.sprite.Group();
         this.bullets  = new gamejs.sprite.Group();  // only enemies' bullets
         this.powerups = new gamejs.sprite.Group();
+        this.paused   = false;
+        this.gameOver = false;
 
         levels.init();
         this.level = levels.get(this.currentLevel);
@@ -28,7 +30,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player'], function
         this.player.handle(event);
     };
 
-    World.prototype.update = function(msDuration, player) {
+    World.prototype.update = function(msDuration) {
         this.currentTime += msDuration;
         if (typeof this.level.duration !== 'undefined' && this.currentTime > this.level.duration) {
             this.currentLevel += 1;
@@ -47,7 +49,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player'], function
         var self = this;
         // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
         _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
-            self.player.getDamage();
+            self.gameOver = self.player.getDamage();
             enemy.kill();  //this.enemy.getDamage();
         });
         // var bulletsCollides  = gamejs.sprite.spriteCollide(this.player, this.bullets, true);
