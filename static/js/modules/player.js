@@ -42,6 +42,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         this.lifes = globals.player.defaultLifes;
         this.untouchable = 0;
         this.hit = false;
+        this.hitAnimation = undefined;
 
         return this;
     };
@@ -49,6 +50,14 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
 
 
     Player.prototype.draw = function(display) {
+        // set the player opacity (in case of hit)
+        if (typeof this.hitAnimation != 'undefined') {
+            if (this.hitAnimation)
+                this.surface.setAlpha(0);
+            else
+                this.surface.setAlpha(1);
+        }
+
         // just draw.
         display.blit(this.surface, $v.add(this.position, [-this.surface.getSize()[0]/2, -this.surface.getSize()[1]/2]));
 
@@ -67,8 +76,9 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         if (this.lifes < 0) {
             this.kill();
         }
-        this.untouchable = 3000;
+        this.untouchable = 1000;
         this.hit = true;
+        this.hitAnimation = true;
     };
 
     Player.prototype.handle = function(event) {
@@ -97,6 +107,10 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         //
         // manage life
         this.untouchable -= time;
+        if (this.untouchable > 0)
+            this.hitAnimation = !this.hitAnimation;
+        else
+            this.hitAnimation = undefined;
 
         //
         // kinematics
