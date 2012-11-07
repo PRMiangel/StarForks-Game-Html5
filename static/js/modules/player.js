@@ -167,7 +167,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
                 this.fireRate = 1000 / globals.game.fps * 2;
                 this.lasers.add(new Laser(this.position, this.orientation));
             }
-        }
+        } else this.fireRate -= msDuration;
         this.lasers.update();
     };
 
@@ -232,8 +232,11 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
 
         this.image = gamejs.image.load(globals.player.laserSprite);
         this.orientation = $m.normaliseRadians(orientation);  // radians
-        this.speed = 125;
         this.origin = position;
+
+        // weapon qualities
+        this.strength = 1;
+        this.speed = 100;
 
         // laser image
         this.image = gamejs.transform.rotate(this.image, $m.degrees(this.orientation));

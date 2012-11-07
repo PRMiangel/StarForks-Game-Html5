@@ -12,12 +12,13 @@ define(['gamejs'], function(gamejs) {
      */
     var Enemy = function(position) {
         Enemy.superConstructor.apply(this, arguments);
+        this.life = 1;
     };
     gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
 
     Enemy.prototype.getDamage = function(damage) {
         this.life -= damage;
-        if (this.life < 0) this.kill();  // you dead, dude
+        if (this.life <= 0) this.kill();  // you dead, dude
     };
 
 

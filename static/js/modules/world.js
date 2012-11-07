@@ -52,12 +52,15 @@ define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/
         var self = this;
         // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
         _.each(gamejs.sprite.groupCollide(this.player.lasers, this.enemies, true, false, gamejs.sprite.collideMask), function(collision) {
-            collision.b.kill();  //this.enemy.getDamage();
+            var laser = collision.a,
+                enemy = collision.b;
+            enemy.getDamage(laser.strength);  // collision.b.kill();
         });
         if (this.player.isUntouchable()) return;
+
         _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
             self.gameOver = self.player.getDamage();
-            enemy.kill();  //this.enemy.getDamage();
+            enemy.kill();
         });
         // var bulletsCollides  = gamejs.sprite.spriteCollide(this.player, this.bullets, true);
 
