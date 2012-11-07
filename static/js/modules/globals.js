@@ -16,7 +16,7 @@ define(function() {
             width: 99,
             height: 75,
             normalStep: 1500,
-            damagedStep: 2,
+            damagedStep: 1000,
             maxSpeed: 500
         },
         enemies: {

@@ -13,13 +13,6 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/st
                 world.handle(event);
             });
 
-            if (world.paused || world.gameOver) return;
-
-            // update
-            starsField.update(msDuration);
-            world.update(msDuration);
-            screen.update(msDuration, world);
-
             // redraw
             display.clear();
             starsField.draw(display);
@@ -30,6 +23,14 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/st
             starsField.stars.draw(display);
 
             screen.draw(display, world);
+
+            if (world.paused || world.gameOver) return;
+
+            // update
+            starsField.update(msDuration);
+            world.update(msDuration);
+            screen.update(msDuration, world);
+
         };
 
         gamejs.time.fpsCallback(tick, this, globals.game.fps);
