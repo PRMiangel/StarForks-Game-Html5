@@ -51,6 +51,7 @@ define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/
         // check collisions (first powerups, then everything else)
         var self = this;
         // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
+        if (this.player.isUntouchable()) return;
         _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
             self.gameOver = self.player.getDamage();
             enemy.kill();  //this.enemy.getDamage();
