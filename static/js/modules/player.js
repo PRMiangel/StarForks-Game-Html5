@@ -69,16 +69,6 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         // gamejs.draw.line(display, '#FF0000', this.rect.bottomright, this.rect.topright);
     };
 
-    Player.prototype.getDamage = function() {
-        if (this.untouchable > 0)
-            return;
-        this.lifes--;
-        this.untouchable = 1000;
-        this.hit = true;
-        this.hitAnimation = true;
-        return (this.lifes < 0);
-    };
-
     Player.prototype.handle = function(event) {
         if (event.type !== gamejs.event.KEY_DOWN && event.type !== gamejs.event.KEY_UP &&
             event.type !== gamejs.event.MOUSE_MOTION)
@@ -105,7 +95,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         //
         // manage life
         this.untouchable -= time;
-        if (this.untouchable > 0)
+        if (this.isUntouchable())
             this.hitAnimation = !this.hitAnimation;
         else
             this.hitAnimation = undefined;
@@ -188,6 +178,23 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
             $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(this.seeking, this.position))
         ));
         //return this.steering.angular * time;
+    };
+
+
+    //
+    // Helpers
+    Player.prototype.getDamage = function() {
+        if (this.isUntouchable())
+            return;
+        this.lifes--;
+        this.untouchable = 1000;
+        this.hit = true;
+        this.hitAnimation = true;
+        return (this.lifes < 0);
+    };
+
+    Player.prototype.isUntouchable = function() {
+        return this.untouchable > 0;
     };
 
     //
