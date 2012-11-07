@@ -24,7 +24,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         // kinematics
         this.position = this.newPosition = center;
         this.velocity = [0, 0];
-        this.orientation = 0;  // 0 orientation means looking down the y axis (-y). in degrees
+        this.orientation = 0;  // 0 orientation means looking down the y axis (-y). in radians
         this.rotation = 0;
         this.steering = {
             linear: [0, 0],
@@ -108,7 +108,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
         this.position     = $v.add(this.position, $v.multiply(this.velocity, time));
 
         //this.rotation     = this.angularMovement(time);
-        this.orientation  = this.angularMovement(time) % 360;
+        this.orientation  = this.angularMovement(time);  // radians
 
         this.rect.center  = this.position;
 
@@ -123,7 +123,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
 
         //
         // update the surface
-        this.surface = gamejs.transform.rotate(this.spriteSheet.get(this.currentSprite), this.orientation);
+        this.surface = gamejs.transform.rotate(this.spriteSheet.get(this.currentSprite), $m.normaliseDegrees($m.degrees(this.orientation)));
         this.mask = gamejs.mask.fromSurface(this.surface);
 
         //
@@ -174,9 +174,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
     };
 
     Player.prototype.angularMovement = function(time) {
-        return $m.normaliseDegrees($m.degrees(
-            $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(this.seeking, this.position))
-        ));
+        return $v.angle(BASE_SPRITE_ORIENTATION, $v.subtract(this.seeking, this.position));
         //return this.steering.angular * time;
     };
 
