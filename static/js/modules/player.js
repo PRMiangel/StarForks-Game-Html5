@@ -239,6 +239,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/uti
         this.image = gamejs.transform.rotate(this.image, $m.degrees(this.orientation));
         var size = this.image.getSize();
         this.rect = new gamejs.Rect($v.add(position, [-size[0] / 2, -size[1]/2]), size);
+        this.mask = gamejs.mask.fromSurface(this.image);
 
         // speed line image
         var speedLineImg = gamejs.image.load(globals.player.speedSprite);
