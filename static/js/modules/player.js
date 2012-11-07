@@ -129,6 +129,7 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math'
             this.currentSprite = 2;
         else
             this.currentSprite = 1;
+        if (this.lifes == 0) this.currentSprite = 3;
 
         //
         // update the surface
