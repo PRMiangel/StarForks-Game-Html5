@@ -12,6 +12,11 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
      */
     var draw = function(display, world) {
         if (world.gameOver) { // draw the gameover screen
+            gamejs.draw.rect(surfaces.fullscreen, '#000000', new gamejs.Rect([0, 0], globals.game.screenSize));
+            surfaces.fullscreen.setAlpha(0.3);
+            display.blit(surfaces.fullscreen);
+            var gameover = fonts.big.render('GAME OVER', '#FFFFFF');
+            display.blit(gameover, [globals.game.screenSize[0] / 2 - gameover.getSize()[0] / 2, globals.game.screenSize[1] / 2 - gameover.getSize()[1] - 2]);
             return;
         }
 
@@ -24,6 +29,7 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             var esc   = fonts.small.render('Press ESC to unpause', '#FFFFFF');
             display.blit(pause, [globals.game.screenSize[0] / 2 - pause.getSize()[0] / 2, globals.game.screenSize[1] / 2 - pause.getSize()[1] - 2]);
             display.blit(esc, [globals.game.screenSize[0] / 2 - esc.getSize()[0] / 2, globals.game.screenSize[1] / 2 + 2]);
+            return;
         }
 
         // clear everything
