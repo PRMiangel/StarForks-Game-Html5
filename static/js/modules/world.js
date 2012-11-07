@@ -28,6 +28,9 @@ define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/
 
     World.prototype.handle = function(event) {
         this.player.handle(event);
+        // pause / unpause world
+        if (event.type === gamejs.event.KEY_DOWN && event.key === gamejs.event.K_ESC)
+            this.paused = !this.paused;
     };
 
     World.prototype.update = function(msDuration) {

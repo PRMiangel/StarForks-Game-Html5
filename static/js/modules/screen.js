@@ -1,8 +1,9 @@
 define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     var surfaces = {
             lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
-            hit: new gamejs.Surface(globals.game.screenSize)
+            fullscreen: new gamejs.Surface(globals.game.screenSize)
         },
+        fonts,
         playerHit,
         lifeSprite;
 
@@ -10,9 +11,19 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
      * Draws every little detail in the screen.
      */
     var draw = function(display, world) {
-        if (world.gameOver) {
-            // draw the gameover screen
+        if (world.gameOver) { // draw the gameover screen
             return;
+        }
+
+        if (world.paused) { // draw the pause screen
+            gamejs.draw.rect(surfaces.fullscreen, '#000000', new gamejs.Rect([0, 0], globals.game.screenSize));
+            surfaces.fullscreen.setAlpha(0.3);
+            display.blit(surfaces.fullscreen);
+            // now the instructions
+            var pause = fonts.big.render('PAUSE', '#FFFFFF');
+            var esc   = fonts.small.render('Press ESC to unpause', '#FFFFFF');
+            display.blit(pause, [globals.game.screenSize[0] / 2 - pause.getSize()[0] / 2, globals.game.screenSize[1] / 2 - pause.getSize()[1] - 2]);
+            display.blit(esc, [globals.game.screenSize[0] / 2 - esc.getSize()[0] / 2, globals.game.screenSize[1] / 2 + 2]);
         }
 
         // clear everything
@@ -25,14 +36,14 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
         // hit flash
         if (typeof playerHit != 'undefined') {
-            gamejs.draw.rect(surfaces.hit, '#FFFFFF', new gamejs.Rect([0, 0], globals.game.screenSize));
+            gamejs.draw.rect(surfaces.fullscreen, '#FFFFFF', new gamejs.Rect([0, 0], globals.game.screenSize));
             if (!playerHit)
-                surfaces.hit.setAlpha(0.5);
+                surfaces.fullscreen.setAlpha(0.5);
         }
 
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
-        display.blit(surfaces.hit);
+        display.blit(surfaces.fullscreen);
     };
 
     /*
@@ -40,6 +51,10 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
      */
     var init = function() {
         lifeSprite = gamejs.image.load(globals.player.lifeSprite);
+        fonts = {
+            big: new gamejs.font.Font('64px Aller'),
+            small: new gamejs.font.Font('24px Aller')
+        };
     };
 
     /*
