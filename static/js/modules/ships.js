@@ -1,45 +1,6 @@
-define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, spriteSheet, utils, $m, $v) {
+define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, spriteSheet, $m, $v) {
 
     var BASE_SPRITE_ORIENTATION = [0, -1];
-
-    /*
-     * Ship SuperClass.
-     * -------------------------------------------------------------------------
-     */
-    var Ship = function(spriteSheetUrl, spriteSheetSpecs, position) {
-        // call superconstructor
-        Ship.superConstructor.apply(this, arguments);
-
-        this.spriteSheet = new spriteSheet.SpriteSheet(spriteSheetUrl, spriteSheetSpecs);
-        this.currentSprite = 0;
-
-        // kinematics
-        this.position = this.newPosition = position;
-        this.velocity = [0, 0];
-        this.orientation = 0;  // 0 orientation means looking down the y axis (-y). in degrees
-        this.rotation = 0;
-        this.steering = {
-            linear: [0, 0],
-            angular: 0
-        };
-
-        return this;
-    };
-    gamejs.utils.objects.extend(Ship, gamejs.sprite.Sprite);
-
-    Ship.prototype.draw = function(display) {
-        // first set the orientation
-
-        // then draw.
-        display.blit(this.surface, $v.add(this.position, [-this.surface.getSize()[0]/2, -this.surface.getSize()[1]/2]));
-
-        // DEBUG: orientation
-        // gamejs.draw.line(display, '#FFFF00', this.position, this.seeking);
-        // gamejs.draw.line(display, '#FF0000', this.rect.topleft, this.rect.topright);
-        // gamejs.draw.line(display, '#FF0000', this.rect.topleft, this.rect.bottomleft);
-        // gamejs.draw.line(display, '#FF0000', this.rect.bottomleft, this.rect.bottomright);
-        // gamejs.draw.line(display, '#FF0000', this.rect.bottomright, this.rect.topright);
-    };
 
     /*
      * Player.
@@ -47,17 +8,32 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
      * -------------------------------------------------------------------------
      */
     var Player = function() {
+        // call superconstructor
+        Player.superConstructor.apply(this, arguments);
+
         var center = [90, globals.game.screenSize[1] / 2];
         var spriteSpecs = {
             width: globals.player.width,
             height: globals.player.height
         };
         var args = [].splice.call(arguments, 0);
-        Player.superConstructor.apply(this, args.concat([globals.player.sprite, spriteSpecs, center]));
 
+        this.spriteSheet = new spriteSheet.SpriteSheet(globals.player.sprite, spriteSpecs);
+        this.currentSprite = 0;
+
+        // kinematics
+        this.position = this.newPosition = center;
+        this.velocity = [0, 0];
+        this.orientation = 0;  // 0 orientation means looking down the y axis (-y). in degrees
+        this.rotation = 0;
+        this.steering = {
+            linear: [0, 0],
+            angular: 0
+        };
         this.directions = [0, 0];
         this.seeking = [globals.game.screenSize[0], this.position[1]];
 
+        // game internals
         this.rect = new gamejs.Rect(center, [globals.player.width-15, globals.player.width-15]);
         this.surface = this.spriteSheet.get(this.currentSprite);
         this.mask = gamejs.mask.fromSurface(this.surface);
@@ -69,7 +45,20 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
 
         return this;
     };
-    gamejs.utils.objects.extend(Player, Ship);
+    gamejs.utils.objects.extend(Player, gamejs.sprite.Sprite);
+
+
+    Player.prototype.draw = function(display) {
+        // just draw.
+        display.blit(this.surface, $v.add(this.position, [-this.surface.getSize()[0]/2, -this.surface.getSize()[1]/2]));
+
+        // DEBUG: orientation
+        // gamejs.draw.line(display, '#FFFF00', this.position, this.seeking);
+        // gamejs.draw.line(display, '#FF0000', this.rect.topleft, this.rect.topright);
+        // gamejs.draw.line(display, '#FF0000', this.rect.topleft, this.rect.bottomleft);
+        // gamejs.draw.line(display, '#FF0000', this.rect.bottomleft, this.rect.bottomright);
+        // gamejs.draw.line(display, '#FF0000', this.rect.bottomright, this.rect.topright);
+    };
 
     Player.prototype.getDamage = function() {
         if (this.untouchable > 0)
@@ -191,7 +180,6 @@ define(['gamejs', 'modules/globals', 'modules/sprite_sheet', 'modules/utils', 'g
     //
     // Return API
     return {
-        Ship: Ship,
         Player: Player
     };
 });
