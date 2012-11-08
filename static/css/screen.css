@@ -23,6 +23,7 @@ h1 { text-align: center; margin-top: 20px }
 canvas {
     display: block;
     visibility: visible;
+    border-color: black;
     border-width: 10px;
     border-style: solid;
     position: absolute;
