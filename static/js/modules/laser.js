@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, $m, $v) {
+define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, utils, $m, $v) {
     /*
      * Laser.
      * just some orientated laser shooted by the player.
@@ -66,8 +66,7 @@ define(['gamejs', 'modules/globals', 'gamejs/utils/math', 'gamejs/utils/vectors'
         this.speedRect[this.speedLineCorner[0]] = this.rect[this.speedLineCorner[0]];
         this.speedRect[this.speedLineCorner[1]] = this.rect[this.speedLineCorner[1]];
 
-        if (this.rect.center[0] > globals.game.screenSize[0] + this.speedLine.getSize()[0] || this.rect.center[0] < -this.speedLine.getSize()[0] ||
-            this.rect.center[1] > globals.game.screenSize[1] + this.speedLine.getSize()[1] || this.rect.center[1] < -this.speedLine.getSize()[1])
+        if (utils.outOfScreen(this.rect.center, this.speedLine.getSize()))
             this.kill();
 
         if (this.speedLine.getAlpha() > 0) {

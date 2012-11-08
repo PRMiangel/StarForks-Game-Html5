@@ -1,4 +1,4 @@
-define(['gamejs'], function(gamejs) {
+define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     var PatternSurface = gamejs.Surface;
     PatternSurface.prototype.fillPattern = function(imgUrl) {
         var image = gamejs.image.loadImage(imgUrl);
@@ -20,6 +20,12 @@ define(['gamejs'], function(gamejs) {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     };
 
+    var outOfScreen = function(pos, size) {
+        size = size || [0, 0];
+        return (pos[0] > globals.game.screenSize[0] || pos[0] < -size[0] ||
+                pos[1] > globals.game.screenSize[1] || pos[1] < -size[1]);
+    };
+
     var randomBetween = function(min, max, integer) {
         if (typeof(integer)==='undefined') integer = true;
         var reminder = integer ? 1 : 0;
@@ -35,6 +41,7 @@ define(['gamejs'], function(gamejs) {
     return {
         basisChange: basisChange,
         hypotenuse: hypotenuse,
+        outOfScreen: outOfScreen,
         randomBetween: randomBetween,
         sameSign: sameSign,
         PatternSurface: PatternSurface
