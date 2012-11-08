@@ -14,7 +14,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
 
         // weapon qualities
         this.strength = 1;
-        this.speed = 100;
+        this.life     = this.strength;
+        this.speed    = 100;
 
         if (arguments.length > 3)  // if there's another argument, it must be an object.
             _.extend(this, arguments[3]);
@@ -40,6 +41,12 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
         this.speedLine.setAlpha(1);
     };
     gamejs.utils.objects.extend(Laser, gamejs.sprite.Sprite);
+
+
+    Laser.prototype.getDamage = function(damage) {
+        this.life -= damage;
+        if (this.life <= 0) this.kill();  // you dead, dude
+    };
 
     Laser.prototype.draw = function(display) {
         // speedline
