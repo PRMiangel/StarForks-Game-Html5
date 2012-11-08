@@ -12,11 +12,21 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         var enemy;
 
         while (world.enemies.sprites().length < this.maxEnemies) {
-            //enemyProb = Math.random();
-            enemy = new this.enemies[0].type();
+            enemy = this.pickEnemy();
+            enemy = new enemy.type();
             enemy.setInitialPosition();
             world.enemies.add(enemy);
         }
+    };
+
+    Level.prototype.pickEnemy = function() {
+        var oldAcc, probAcc = 0;
+        var select  = Math.random();
+        return _.find(this.enemies, function(enemy) {
+            oldAcc = probAcc;
+            probAcc += enemy.prob;
+            return (select >= oldAcc && select < probAcc);
+        });
     };
 
 
@@ -29,7 +39,10 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         list.push(
             new Level({
                 maxEnemies: 5,
-                enemies: [{type: foes.Meteor, prob: 1}]
+                enemies: [
+                    {type: foes.Meteor, prob: .7},
+                    {type: foes.Explorer, prob: .3}
+                ]
             })
         );
     };

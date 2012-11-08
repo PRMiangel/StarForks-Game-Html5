@@ -32,6 +32,8 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             return;
         }
 
+        if (world.paused || world.gameOver) return;
+
         // clear everything
         for (var key in surfaces)
             surfaces[key].clear();
