@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/player', 'modules/helpers/utils'], function(_, gamejs, screen, levels, $p, utils) {
+define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player', 'modules/helpers/utils'], function(_, gamejs, levels, $p, utils) {
     /*
      * What the world needs to control:
      * 1. updating levels
