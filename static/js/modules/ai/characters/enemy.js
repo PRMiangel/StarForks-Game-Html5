@@ -1,10 +1,6 @@
 define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     /*
-     * This is basically a proxy module for all the enemies in the
-     * static/js/modules/ai/enemies/ lib
-     *
-     * In this module we also implement Enemy, the base class for all the
-     * monsters.
+     * In this module we implement Enemy, the base class for all the monsters.
      */
 
     /*
@@ -15,6 +11,14 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         this.life = 1;
     };
     gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
+
+    Enemy.prototype.canShoot = function() {
+        return false;
+    };
+
+    Enemy.prototype.shoot = function() {
+        return null;
+    };
 
     Enemy.prototype.getDamage = function(damage) {
         this.life -= damage;

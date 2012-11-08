@@ -34,6 +34,8 @@ define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/
     };
 
     World.prototype.update = function(msDuration) {
+        var self = this;
+
         this.currentTime += msDuration;
         if (typeof this.level.duration !== 'undefined' && this.currentTime > this.level.duration) {
             this.currentLevel += 1;
@@ -45,11 +47,18 @@ define(['underscore', 'gamejs', 'modules/screen', 'modules/ai/levels', 'modules/
         // update stuff
         this.level.update(msDuration, this);
         this.player.update(msDuration);
-        this.enemies.update(msDuration);
+        var bullet = null;
+        _.each(this.enemies.sprites(), function(enemy) {
+            enemy.update(msDuration);
+
+            if (typeof enemy.canShoot !== 'undefined' && enemy.canShoot(msDuration)) {
+                bullet = enemy.shoot();
+                if (bullet != null) self.enemies.add(bullet);
+            }
+        });
         // update powerups.
 
         // check collisions (first powerups, then everything else)
-        var self = this;
         // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
         _.each(gamejs.sprite.groupCollide(this.player.lasers, this.enemies, true, false, gamejs.sprite.collideMask), function(collision) {
             var laser = collision.a,

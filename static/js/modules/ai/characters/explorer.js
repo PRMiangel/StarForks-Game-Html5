@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(_, gamejs, enemy, globals, utils, $m, $v) {
+define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/laser', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(_, gamejs, enemy, globals, laser, utils, $m, $v) {
     /*
      * Explorer ship.
      * Really dumb ships that fire just once in a while and move straight
@@ -23,8 +23,21 @@ define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals'
 
         // firing
         this.fireRate = 1000 / globals.game.fps * 120;
+        this.nextFire = Math.random() * this.fireRate;
     };
     gamejs.utils.objects.extend(Explorer, enemy.Enemy);
+
+    Explorer.prototype.canShoot = function(msDuration) {
+        if (this.rect.center > globals.game.screenSize[0]) return;
+
+        this.nextFire -= msDuration;
+        return this.nextFire < 0;
+    };
+
+    Explorer.prototype.shoot = function() {
+        this.nextFire = this.fireRate;
+        return new laser.Laser(globals.player.laserSprite, this.rect.center, this.orientation);
+    };
 
     Explorer.prototype.setInitialPosition = function() {
         enemy.Enemy.prototype.setInitialPosition.call(this);
