@@ -1,8 +1,8 @@
 define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     var surfaces = {
+            fullscreen: new gamejs.Surface(globals.game.screenSize),
             levelDuration: new gamejs.Surface([globals.game.screenSize[0] - 20, 12]),
-            lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
-            fullscreen: new gamejs.Surface(globals.game.screenSize)
+            lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27])
         },
         fonts,
         playerHit,
@@ -49,6 +49,11 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             gamejs.draw.rect(surfaces.levelDuration, '#FFFFFF', new gamejs.Rect([2, 2], [(world.currentTime * (globals.game.screenSize[0] - 4)) / world.level.duration, surfaces.levelDuration.getSize()[1] - 4]));
             surfaces.levelDuration.setAlpha(0.75);
         }
+
+        // score
+        var score = fonts.small.render(world.score, '#FFFFFF');
+        score.setAlpha(0.75);
+        display.blit(score, [globals.game.screenSize[0] / 2 - score.getSize()[0] / 2, 10]);
 
         // hit flash
         if (typeof playerHit != 'undefined') {

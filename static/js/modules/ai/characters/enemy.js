@@ -24,7 +24,7 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         this.life -= damage;
         if (this.life <= 0) {
             this.kill();  // you dead, dude
-            return globals.game.killScore;
+            return this.killScore || globals.game.killScore;
         }
         return 0; // score
     };

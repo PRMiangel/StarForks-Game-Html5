@@ -2,6 +2,7 @@ define(function() {
     return {
         game: {
             fps: 36,
+            killScore: 5,
             screenSize: [window.innerWidth-20, window.innerHeight-20]
         },
         starsField: {
