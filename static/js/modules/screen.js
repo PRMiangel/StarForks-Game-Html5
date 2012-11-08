@@ -17,7 +17,22 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             surfaces.fullscreen.setAlpha(0.3);
             display.blit(surfaces.fullscreen);
             var gameover = fonts.big.render('GAME OVER', '#FFFFFF');
-            display.blit(gameover, [globals.game.screenSize[0] / 2 - gameover.getSize()[0] / 2, globals.game.screenSize[1] / 2 - gameover.getSize()[1] - 2]);
+            display.blit(gameover, [globals.game.screenSize[0] / 2 - gameover.getSize()[0] / 2, globals.game.screenSize[1] / 2 - 136]);
+
+            // draw final score
+            var accuracy = world.accuracy[0] === 0 ? 0 : world.accuracy[1] / world.accuracy[0];
+            var total = ((world.score + world.distance) * (1 + accuracy)).toFixed(2);
+            accuracy = accuracy > 1 ? accuracy = 1 : accuracy;
+
+            display.blit(fonts.small.render('Score', '#FFFFFF'), [globals.game.screenSize[0] / 2 - 150, globals.game.screenSize[1] / 2 - 36]);
+            display.blit(fonts.small.render('Distance', '#FFFFFF'), [globals.game.screenSize[0] / 2 - 150, globals.game.screenSize[1] / 2]);
+            display.blit(fonts.small.render('Accuracy', '#FFFFFF'), [globals.game.screenSize[0] / 2 - 150, globals.game.screenSize[1] / 2 + 36]);
+            display.blit(fonts.small.render('TOTAL', '#FFFFFF'), [globals.game.screenSize[0] / 2 - 150, globals.game.screenSize[1] / 2 + 108]);
+
+            display.blit(fonts.small.render(world.score, '#FFFFFF'), [globals.game.screenSize[0] / 2 + 125, globals.game.screenSize[1] / 2 - 36]);
+            display.blit(fonts.small.render(world.distance, '#FFFFFF'), [globals.game.screenSize[0] / 2 + 125, globals.game.screenSize[1] / 2]);
+            display.blit(fonts.small.render((accuracy * 100).toFixed(2) + '%', '#FFFFFF'), [globals.game.screenSize[0] / 2 + 125, globals.game.screenSize[1] / 2 + 36]);
+            display.blit(fonts.small.render(total, '#FFFFFF'), [globals.game.screenSize[0] / 2 + 125, globals.game.screenSize[1] / 2 + 108]);
             return;
         }
 
