@@ -26,6 +26,10 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
                 pos[1] > globals.game.screenSize[1] || pos[1] < -size[1]);
     };
 
+    var printStack = function() {
+        try { throw Error(); } catch(ex) { return ex.stack; }
+    };
+
     var randomBetween = function(min, max, integer) {
         if (typeof(integer)==='undefined') integer = true;
         var reminder = integer ? 1 : 0;
@@ -42,6 +46,7 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         basisChange: basisChange,
         hypotenuse: hypotenuse,
         outOfScreen: outOfScreen,
+        printStack: printStack,
         randomBetween: randomBetween,
         sameSign: sameSign,
         PatternSurface: PatternSurface
