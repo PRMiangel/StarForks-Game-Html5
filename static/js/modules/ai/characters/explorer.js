@@ -20,6 +20,7 @@ define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals'
         // enemy sprite.
         this.speed    = utils.randomBetween(0.9, 1, false) * 7;
         this.life     = 3;
+        this.firingSpeed = 75;  // it may be a good idea to relate this to the enemy's speed.
 
         // firing
         this.fireRate = 1000 / globals.game.fps * 120;
@@ -36,7 +37,10 @@ define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals'
 
     Explorer.prototype.shoot = function() {
         this.nextFire = this.fireRate;
-        return new laser.Laser(globals.player.laserSprite, this.rect.center, this.orientation);
+        return new laser.Laser(
+            globals.enemies.laserSprite, this.rect.center, this.orientation,
+            { 'speed': this.firingSpeed }
+        );
     };
 
     Explorer.prototype.setInitialPosition = function() {

@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, utils, $m, $v) {
+define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(_, gamejs, globals, utils, $m, $v) {
     /*
      * Laser.
      * just some orientated laser shooted by the player.
@@ -15,6 +15,9 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
         // weapon qualities
         this.strength = 1;
         this.speed = 100;
+
+        if (arguments.length > 3)  // if there's another argument, it must be an object.
+            _.extend(this, arguments[3]);
 
         // laser image
         this.image = gamejs.transform.rotate(this.image, $m.degrees(this.orientation));
