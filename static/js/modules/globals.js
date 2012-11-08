@@ -23,6 +23,7 @@ define(function() {
         },
         enemies: {
             images: {
+                explorer: 'static/images/enemyShip.png',
                 meteor: 'static/images/meteorBig.png'
             }
         },

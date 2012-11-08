@@ -18,6 +18,7 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         globals.player.lifeSprite,
         globals.player.laserSprite,
         globals.player.speedSprite,
+        globals.enemies.images.explorer,
         globals.enemies.images.meteor
     ]);
 
