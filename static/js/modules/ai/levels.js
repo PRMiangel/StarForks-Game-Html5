@@ -9,15 +9,13 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
     };
 
     Level.prototype.update = function(msDuration, world) {
-        var enemyProb, position;
+        var enemy;
 
         while (world.enemies.sprites().length < this.maxEnemies) {
             //enemyProb = Math.random();
-            position = [
-                Math.random() * globals.game.screenSize[0] + globals.game.screenSize[0] + 100,
-                Math.random() * globals.game.screenSize[1]
-            ];
-            world.enemies.add(new this.enemies[0].type(position));
+            enemy = new this.enemies[0].type();
+            enemy.setInitialPosition();
+            world.enemies.add(enemy);
         }
     };
 

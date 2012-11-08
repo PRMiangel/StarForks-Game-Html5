@@ -2,13 +2,13 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/hel
     /*
      * Meteor.
      */
-    var Meteor = function(position) {
+    var Meteor = function() {
         Meteor.superConstructor.apply(this, arguments);
 
         // basics...
         this.originalImg = gamejs.image.load(globals.enemies.images.meteor);
         this.image = this.originalImg;
-        this.rect  = new gamejs.Rect(position, this.image.getSize());
+        this.rect  = new gamejs.Rect([0, 0], this.image.getSize());
         this.mask  = gamejs.mask.fromSurface(this.image);
 
         // this ones might vary according to the level, but are common to every

@@ -1,4 +1,4 @@
-define(['gamejs'], function(gamejs) {
+define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     /*
      * This is basically a proxy module for all the enemies in the
      * static/js/modules/ai/enemies/ lib
@@ -10,7 +10,7 @@ define(['gamejs'], function(gamejs) {
     /*
      * Enemy.
      */
-    var Enemy = function(position) {
+    var Enemy = function() {
         Enemy.superConstructor.apply(this, arguments);
         this.life = 1;
     };
@@ -19,6 +19,12 @@ define(['gamejs'], function(gamejs) {
     Enemy.prototype.getDamage = function(damage) {
         this.life -= damage;
         if (this.life <= 0) this.kill();  // you dead, dude
+    };
+
+    Enemy.prototype.setInitialPosition = function() {
+        this.rect.left = Math.random() * globals.game.screenSize[0] + globals.game.screenSize[0] + 100;
+        this.rect.top  = Math.random() * globals.game.screenSize[1];
+        return;
     };
 
 
