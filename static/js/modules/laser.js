@@ -46,6 +46,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
     Laser.prototype.getDamage = function(damage) {
         this.life -= damage;
         if (this.life <= 0) this.kill();  // you dead, dude
+        return 0;
     };
 
     Laser.prototype.draw = function(display) {

@@ -22,7 +22,11 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
     Enemy.prototype.getDamage = function(damage) {
         this.life -= damage;
-        if (this.life <= 0) this.kill();  // you dead, dude
+        if (this.life <= 0) {
+            this.kill();  // you dead, dude
+            return globals.game.killScore;
+        }
+        return 0; // score
     };
 
     Enemy.prototype.setInitialPosition = function() {

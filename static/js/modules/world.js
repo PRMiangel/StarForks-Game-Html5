@@ -12,10 +12,14 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player', 'modules/
         this.currentLevel = 0;
         this.currentTime  = 0;
         this.enemies  = new gamejs.sprite.Group();
-        this.bullets  = new gamejs.sprite.Group();  // only enemies' bullets
         this.powerups = new gamejs.sprite.Group();
         this.paused   = false;
         this.gameOver = false;
+
+        // scoring
+        this.score    = 0;
+        this.distance = 0;
+        this.accuracy = [0, 0]; // bullet quota, enemy quota
 
         levels.init();
         this.level = levels.get(this.currentLevel);
@@ -64,7 +68,8 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player', 'modules/
             var laser = collision.a,
                 enemy = collision.b;
             if (utils.outOfScreen(enemy.rect.topleft, enemy.image.getSize())) return;  // do not hurt the ones out of the screen
-            enemy.getDamage(laser.strength);  // collision.b.kill();
+            self.score += enemy.getDamage(laser.strength);  // collision.b.kill();
+            self.accuracy[1]++;
         });
         if (this.player.isUntouchable()) return;
 
@@ -75,6 +80,8 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player', 'modules/
         // var bulletsCollides  = gamejs.sprite.spriteCollide(this.player, this.bullets, true);
 
         // update score.
+        this.distance++;
+        this.accuracy[0] += this.player.fired;
     };
 
     return {
