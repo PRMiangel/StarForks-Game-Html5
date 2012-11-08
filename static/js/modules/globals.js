@@ -25,7 +25,8 @@ define(function() {
             images: {
                 explorer: 'static/images/enemyShip.png',
                 meteor: 'static/images/meteorBig.png'
-            }
+            },
+            laserSprite: 'static/images/laserRed.png'
         },
         physics: {
             windResistance: 15

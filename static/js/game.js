@@ -19,7 +19,8 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         globals.player.laserSprite,
         globals.player.speedSprite,
         globals.enemies.images.explorer,
-        globals.enemies.images.meteor
+        globals.enemies.images.meteor,
+        globals.enemies.laserSprite
     ]);
 
     globals.screenSize = [$('gjs-canvas').attr('width'), $('gjs-canvas').attr('height')];
