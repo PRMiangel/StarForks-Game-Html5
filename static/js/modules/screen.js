@@ -1,5 +1,6 @@
 define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     var surfaces = {
+            levelDuration: new gamejs.Surface([globals.game.screenSize[0] - 20, 12]),
             lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
             fullscreen: new gamejs.Surface(globals.game.screenSize)
         },
@@ -42,6 +43,13 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         for (var i = 0; i < world.player.lifes; i++)
             surfaces.lifes.blit(lifeSprite, [i * 40, 0]);
 
+        // level duration
+        if (typeof world.level.duration !== 'undefined') {
+            gamejs.draw.rect(surfaces.levelDuration, '#000000', new gamejs.Rect([0, 0], surfaces.levelDuration.getSize()));
+            gamejs.draw.rect(surfaces.levelDuration, '#FFFFFF', new gamejs.Rect([2, 2], [(world.currentTime * (globals.game.screenSize[0] - 4)) / world.level.duration, surfaces.levelDuration.getSize()[1] - 4]));
+            surfaces.levelDuration.setAlpha(0.75);
+        }
+
         // hit flash
         if (typeof playerHit != 'undefined') {
             gamejs.draw.rect(surfaces.fullscreen, '#FFFFFF', new gamejs.Rect([0, 0], globals.game.screenSize));
@@ -51,6 +59,7 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
+        display.blit(surfaces.levelDuration, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - 10]);
         display.blit(surfaces.fullscreen);
     };
 
