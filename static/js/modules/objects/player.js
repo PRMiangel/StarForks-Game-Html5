@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/laser', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, laser, globals, spriteSheet, $m, $v) {
+define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, laser, globals, spriteSheet, $m, $v) {
 
     var BASE_SPRITE_ORIENTATION = [0, -1];
 

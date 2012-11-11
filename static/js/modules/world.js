@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player', 'modules/helpers/utils'], function(_, gamejs, levels, $p, utils) {
+define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', 'modules/helpers/utils'], function(_, gamejs, levels, $p, utils) {
     /*
      * What the world needs to control:
      * 1. updating levels
@@ -68,7 +68,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/player', 'modules/
             var laser = collision.a,
                 enemy = collision.b;
             if (utils.outOfScreen(enemy.rect.topleft, enemy.image.getSize())) return;  // do not hurt the ones out of the screen
-            self.score += enemy.getDamage(laser.strength);  // collision.b.kill();
+            self.score += enemy.getDamage(laser.strength);
             self.accuracy[1]++;
         });
         if (this.player.isUntouchable()) return;

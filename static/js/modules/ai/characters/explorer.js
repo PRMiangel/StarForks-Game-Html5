@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/laser', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(_, gamejs, enemy, globals, laser, utils, $m, $v) {
+define(['underscore', 'gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/objects/laser', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(_, gamejs, enemy, globals, laser, utils, $m, $v) {
     /*
      * Explorer ship.
      * Really dumb ships that fire just once in a while and move straight
