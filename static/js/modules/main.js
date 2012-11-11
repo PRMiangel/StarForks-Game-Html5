@@ -27,7 +27,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/screen', 'modules/he
             if (world.paused || world.gameOver) return;
 
             // update
-            starsField.update(msDuration);
+            starsField.update(msDuration, world.level);
             world.update(msDuration);
             screen.update(msDuration, world);
 

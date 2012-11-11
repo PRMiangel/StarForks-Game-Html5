@@ -5,6 +5,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
      * generating them
      */
     var Level = function(opts) {
+        this.speed = 5;
         _.extend(this, opts);
     };
 

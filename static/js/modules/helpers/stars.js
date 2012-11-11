@@ -17,8 +17,6 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
         this.offset1 = [0, 0];
         this.offset2 = [size[0], 0];
 
-        this.speed = 5;
-
         // clouds
         this.lowerClouds = new Clouds();
         this.upperClouds = new Clouds(10, [0.5, 1]);
@@ -39,9 +37,9 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
     StarsField.prototype.handle = function(event) {
     };
 
-    StarsField.prototype.update = function(msDuration) {
-        this.offset1[0] -= this.speed;
-        this.offset2[0] -= this.speed;
+    StarsField.prototype.update = function(msDuration, level) {
+        this.offset1[0] -= level.speed;
+        this.offset2[0] -= level.speed;
 
         if (this.offset1[0] <= globals.game.screenSize[0] - size[0])
             this.offset2[0] = this.offset1[0] + size[0];
