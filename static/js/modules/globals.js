@@ -29,6 +29,13 @@ define(function() {
             },
             laserSprite: 'static/images/laserRed.png'
         },
+        powerups: {
+            0: 'static/images/powerups/cloning.png',
+            1: 'static/images/powerups/forking.png',
+            2: 'static/images/powerups/branching.png',
+            3: 'static/images/powerups/pushing.png',
+            4: 'static/images/powerups/pulling.png'
+        },
         physics: {
             windResistance: 15
         }

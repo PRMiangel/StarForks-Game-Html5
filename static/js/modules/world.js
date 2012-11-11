@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', 'modules/helpers/utils'], function(_, gamejs, levels, $p, utils) {
+define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', 'modules/objects/powerups', 'modules/helpers/utils'], function(_, gamejs, levels, $p, powerups, utils) {
     /*
      * What the world needs to control:
      * 1. updating levels
@@ -26,6 +26,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
     };
 
     World.prototype.draw = function(display) {
+        this.powerups.draw(display);
         this.player.draw(display);
         this.enemies.draw(display);
     };
@@ -60,16 +61,24 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
                 if (bullet != null) self.enemies.add(bullet);
             }
         });
-        // update powerups.
+        this.powerups.update(msDuration, this.level);
 
-        // check collisions (first powerups, then everything else)
-        // var powerupsCollides = gamejs.sprite.spriteCollide(this.player, this.powerups);
+        // check collisions
+        // first powerups
+        _.each(gamejs.sprite.spriteCollide(this.player, this.powerups, true, gamejs.sprite.collideMask), function(powerup) {
+            powerup.upgrade(self.player);
+            self.score += 1;
+        });
+        // then everything else
         _.each(gamejs.sprite.groupCollide(this.player.lasers, this.enemies, true, false, gamejs.sprite.collideMask), function(collision) {
             var laser = collision.a,
                 enemy = collision.b;
             if (utils.outOfScreen(enemy.rect.topleft, enemy.image.getSize())) return;  // do not hurt the ones out of the screen
             self.score += enemy.getDamage(laser.strength);
             self.accuracy[1]++;
+
+            if (enemy.isDead() && Math.random() < .08)
+                self.powerups.add(new powerups.Powerup(enemy.rect.center));
         });
         if (this.player.isUntouchable()) return;
 
