@@ -49,6 +49,8 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
         this.fired  = false;
         this.lasers = new gamejs.sprite.Group();
         this.fireRate = 0;
+        this.fireDeviation = 0;
+        this.ammoRatio = 1;
 
         return this;
     };
@@ -167,7 +169,17 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
             this.fireRate -= msDuration;
             if (this.fireRate < 0) {
                 this.fireRate = 1000 / globals.game.fps * 2;
-                this.lasers.add(new laser.Laser(globals.player.laserSprite, this.position, this.orientation));
+                if (this.ammoRatio == 1)
+                    this.fireDeviation = 0;
+                else if (this.ammoRatio == 2)
+                    this.fireDeviation = this.fireDeviation == 0 ? 25 : -this.fireDeviation;
+                else {
+                    if (this.fireDeviation < 0)
+                        this.fireDeviation = 0;
+                    else
+                        this.fireDeviation = this.fireDeviation == 0 ? 30 : -this.fireDeviation;
+                }
+                this.lasers.add(new laser.Laser(globals.player.laserSprite, $v.add(this.position, [this.fireDeviation * Math.cos(this.orientation), this.fireDeviation * Math.sin(this.orientation)]), this.orientation));
                 this.fired = true;
             }
         } else this.fireRate -= msDuration;
