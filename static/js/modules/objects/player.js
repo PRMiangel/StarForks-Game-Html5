@@ -1,6 +1,28 @@
 define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, laser, globals, spriteSheet, $m, $v) {
 
     var BASE_SPRITE_ORIENTATION = [0, -1];
+    var LASER_TYPES = [
+        {
+            // default
+        },
+        {
+            strength: 2
+        },
+        {
+            strength: 3,
+            life: 2
+        },
+        {
+            strength: 4,
+            life: 2,
+            speed: 125
+        },
+        {
+            strength: 5,
+            life: 3,
+            speed: 125
+        }
+    ];
 
     /*
      * Player.
@@ -51,6 +73,7 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
         this.fireRate = 0;
         this.fireDeviation = 0;
         this.ammoRatio = 1;
+        this.ammoStrength = 1;
 
         return this;
     };
@@ -179,7 +202,7 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
                     else
                         this.fireDeviation = this.fireDeviation == 0 ? 30 : -this.fireDeviation;
                 }
-                this.lasers.add(new laser.Laser(globals.player.laserSprite, $v.add(this.position, [this.fireDeviation * Math.cos(this.orientation), this.fireDeviation * Math.sin(this.orientation)]), this.orientation));
+                this.lasers.add(new laser.Laser(globals.player.laserSprite, $v.add(this.position, [this.fireDeviation * Math.cos(this.orientation), this.fireDeviation * Math.sin(this.orientation)]), this.orientation, LASER_TYPES[this.ammoStrength-1]));
                 this.fired = true;
             }
         } else this.fireRate -= msDuration;
