@@ -2,8 +2,10 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     var surfaces = {
             fullscreen: new gamejs.Surface(globals.game.screenSize),
             levelDuration: new gamejs.Surface([globals.game.screenSize[0] - 20, 12]),
-            lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27])
+            lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
+            forkPower: new gamejs.Surface([185, 16])
         },
+        texts = {},
         fonts,
         playerHit,
         lifeSprite;
@@ -65,6 +67,12 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             surfaces.levelDuration.setAlpha(0.75);
         }
 
+        // fork power
+        surfaces.forkPower.blit(texts.forkPower, [0, 0]);
+        gamejs.draw.rect(surfaces.forkPower, '#000000', new gamejs.Rect([85, 2], [100, 12]));
+        gamejs.draw.rect(surfaces.forkPower, '#FFFFFF', new gamejs.Rect([87, 4], [world.player.ammoStrength * 96 / 5, 8]));
+        surfaces.forkPower.setAlpha(0.5);
+
         // score
         var score = fonts.small.render(world.score, '#FFFFFF');
         score.setAlpha(0.75);
@@ -79,6 +87,7 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
+        display.blit(surfaces.forkPower, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - 20]);
         display.blit(surfaces.levelDuration, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - 10]);
         display.blit(surfaces.fullscreen);
     };
@@ -90,7 +99,11 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         lifeSprite = gamejs.image.load(globals.player.lifeSprite);
         fonts = {
             big: new gamejs.font.Font('64px Aller'),
-            small: new gamejs.font.Font('24px Aller')
+            small: new gamejs.font.Font('24px Aller'),
+            mini: new gamejs.font.Font('14px Aller')
+        };
+        texts = {
+            forkPower: fonts.mini.render('Fork Power', '#FFFFFF')
         };
     };
 
