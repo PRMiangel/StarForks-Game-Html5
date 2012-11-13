@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/vectors'], function(gamejs, globals, utils, $v) {
+define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, globals, utils, $m, $v) {
     var Powerup = function(center) {
         Powerup.superConstructor.apply(this, arguments);
 
@@ -15,8 +15,14 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/vect
     };
     gamejs.utils.objects.extend(Powerup, gamejs.sprite.Sprite);
 
-    Powerup.prototype.update = function(msDuration, level) {
-        this.rect.left -= level.speed;
+    Powerup.prototype.update = function(msDuration, world) {
+        if (world.player.pulling > 0) {
+            var angle = $m.normaliseRadians($v.angle([1, 0], $v.subtract(world.player.position, this.rect.topleft)));
+            this.rect.left += world.level.speed * 4 * Math.cos(angle);
+            this.rect.top  += world.level.speed * 4 * Math.sin(angle);
+        } else
+            this.rect.left -= world.level.speed;
+        return;
     };
 
     Powerup.prototype.upgrade = function(player) {
@@ -57,7 +63,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/vect
      * Pulling: now the player will automatically pull other powerups
      */
     Powerup.prototype.pull = function(player) {
-        player.pullPowerups = true;
+        player.pulling += 30000;
         return;
     };
 
@@ -66,7 +72,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/vect
      * for 30 seconds.
      */
     Powerup.prototype.push = function(player) {
-        player.pushPowerup = 30000;
+        player.pushing += 30000;
         return;
     };
 

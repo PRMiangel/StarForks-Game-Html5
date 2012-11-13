@@ -75,6 +75,10 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
         this.ammoRatio = 1;
         this.ammoStrength = 1;
 
+        // powers
+        this.pulling = 0;
+        this.pushing = 0;
+
         return this;
     };
     gamejs.utils.objects.extend(Player, gamejs.sprite.Sprite);
@@ -139,6 +143,12 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
             this.hitAnimation = !this.hitAnimation;
         else
             this.hitAnimation = undefined;
+
+        //
+        // powers
+        //if (this.pulling != 0) this.pulling = this.pulling < 0 ? 0 : this.pulling - msDuration;
+        if (this.pushing != 0) this.pushing = this.pushing < 0 ? 0 : this.pushing - msDuration;
+
 
         //
         // kinematics

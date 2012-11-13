@@ -61,7 +61,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
                 if (bullet != null) self.enemies.add(bullet);
             }
         });
-        this.powerups.update(msDuration, this.level);
+        this.powerups.update(msDuration, this);
 
         // check collisions
         // first powerups
