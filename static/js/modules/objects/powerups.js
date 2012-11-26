@@ -73,7 +73,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * Pulling: now the player will automatically pull other powerups
      */
     Powerup.prototype.pull = function(player) {
-        player.pulling += 30000;
+        player.pulling = 20000;
         return true;
     };
 
@@ -82,7 +82,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * for 30 seconds.
      */
     Powerup.prototype.push = function(player) {
-        player.pushing += 30000;
+        player.pushing = 20000;
         return true;
     };
 

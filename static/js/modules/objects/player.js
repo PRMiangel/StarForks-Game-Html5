@@ -93,6 +93,23 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
                 this.surface.setAlpha(1);
         }
 
+        // draw pulling / pushing powers
+        var radius, pullingCircle, pushingCircle;
+        if (this.pulling > 0) {
+            radius = 40 * (1 + ((this.pulling % globals.player.circleSpeed) * 1.8 / globals.player.circleSpeed));
+            pullingCircle = new gamejs.Surface([radius * 2 + 2, radius * 2 + 2]);
+            gamejs.draw.circle(pullingCircle, '#d3d3d3', [radius, radius], radius, 1);
+            pullingCircle.setAlpha(1 - (this.pulling % globals.player.circleSpeed) / globals.player.circleSpeed);
+            display.blit(pullingCircle, $v.add(this.rect.center, [-radius, -radius]));
+        }
+        if (this.pushing > 0) {
+            radius = 40 * (1 + ((globals.player.circleSpeed - (this.pushing % globals.player.circleSpeed)) * 1.8 / globals.player.circleSpeed));
+            pushingCircle = new gamejs.Surface([radius * 2 + 2, radius * 2 + 2]);
+            gamejs.draw.circle(pushingCircle, '#ffd324', [radius, radius], radius, 1);
+            pushingCircle.setAlpha(1 - (this.pushing % globals.player.circleSpeed) / globals.player.circleSpeed);
+            display.blit(pushingCircle, $v.add(this.rect.center, [-radius, -radius]));
+        }
+
         // draw the lasers
         this.lasers.draw(display);
 
@@ -146,7 +163,7 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
 
         //
         // powers
-        //if (this.pulling != 0) this.pulling = this.pulling < 0 ? 0 : this.pulling - msDuration;
+        if (this.pulling != 0) this.pulling = this.pulling < 0 ? 0 : this.pulling - msDuration;
         if (this.pushing != 0) this.pushing = this.pushing < 0 ? 0 : this.pushing - msDuration;
 
 

@@ -20,7 +20,8 @@ define(function() {
             height: 75,
             normalStep: 1500,
             damagedStep: 1000,
-            maxSpeed: 500
+            maxSpeed: 500,
+            circleSpeed: 400
         },
         enemies: {
             images: {
