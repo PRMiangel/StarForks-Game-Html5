@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals'], function(gamejs, globals) {
+define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], function(_, gamejs, globals, $v) {
     var surfaces = {
             fullscreen: new gamejs.Surface(globals.game.screenSize),
             levelDuration: new gamejs.Surface([globals.game.screenSize[0] - 20, 12]),
@@ -8,7 +8,8 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         texts = {},
         fonts,
         playerHit,
-        lifeSprite;
+        lifeSprite,
+        powerups = [];
 
     /*
      * Draws every little detail in the screen.
@@ -85,6 +86,16 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
                 surfaces.fullscreen.setAlpha(0.5);
         }
 
+        // new powerups
+        var powerPercentage, powerSurface;
+        _.each(powerups, function(powerTuple) {
+            powerPercentage = 1 - powerTuple[1] / globals.powerups.screenDuration;
+            powerSurface = texts[powerTuple[0]];
+            powerSurface = gamejs.transform.scale(powerSurface, $v.multiply(powerSurface.getSize(), 1 + powerPercentage));
+            powerSurface.setAlpha(powerPercentage);
+            display.blit(powerSurface, [globals.game.screenSize[0] / 2 - powerSurface.getSize()[0] / 2, 40]);
+        });
+
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
         display.blit(surfaces.forkPower, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - 20]);
@@ -103,7 +114,13 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
             mini: new gamejs.font.Font('14px Aller')
         };
         texts = {
-            forkPower: fonts.mini.render('Fork Power', '#FFFFFF')
+            forkPower: fonts.mini.render('Fork Power', '#FFFFFF'),
+            // powerups
+            branching: fonts.small.render('Branch your lasers!', '#FFFFFF'),
+            cloning:   fonts.small.render('Clone a new life!', '#FFFFFF'),
+            forking:   fonts.small.render('Fork your power!', '#FFFFFF'),
+            pulling:   fonts.small.render('Pull new powers!', '#FFFFFF'),
+            pushing:   fonts.small.render('Push your enemies!', '#FFFFFF')
         };
     };
 
@@ -130,6 +147,18 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
         // playerHit -= msDuration;
         // if (playerHit < 0) playerHit = 0;
         // if (playerHit != 0) console.log(playerHit);
+
+        // new powerups
+        _.each(world.currentPowerups, function(powerup) {
+            powerups.push([powerup.getType(), globals.powerups.screenDuration + msDuration]);
+        });
+        world.currentPowerups = [];
+        if (powerups.length) {
+            _.each(powerups, function(powerTuple) {
+                powerTuple[1] -= msDuration;
+            });
+            powerups = _.filter(powerups, function(pt) { return pt[1] > 0;  });
+        }
     };
 
     return {

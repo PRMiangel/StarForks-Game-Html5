@@ -34,7 +34,8 @@ define(function() {
             1: 'static/images/powerups/forking.png',
             2: 'static/images/powerups/branching.png',
             3: 'static/images/powerups/pulling.png',
-            4: 'static/images/powerups/pushing.png'
+            4: 'static/images/powerups/pushing.png',
+            screenDuration: 835
         },
         physics: {
             windResistance: 15

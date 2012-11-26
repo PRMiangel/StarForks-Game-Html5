@@ -21,6 +21,8 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
         this.distance = 0;
         this.accuracy = [0, 0]; // bullet quota, enemy quota
 
+        this.currentPowerups = [];
+
         levels.init();
         this.level = levels.get(this.currentLevel);
     };
@@ -65,10 +67,14 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
 
         // check collisions
         // first powerups
+        this.currentPowerups = [];
+        var upgraded = false;
         _.each(gamejs.sprite.spriteCollide(this.player, this.powerups, true, gamejs.sprite.collideMask), function(powerup) {
-            powerup.upgrade(self.player);
+            upgraded = powerup.upgrade(self.player);
+            if (upgraded) self.currentPowerups.push(powerup);
             self.score += 1;
         });
+
         // then everything else
         _.each(gamejs.sprite.groupCollide(this.player.lasers, this.enemies, true, false, gamejs.sprite.collideMask), function(collision) {
             var laser = collision.a,
@@ -87,7 +93,6 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
             self.player.ammoRatio = 1;
             enemy.kill();
         });
-        // var bulletsCollides  = gamejs.sprite.spriteCollide(this.player, this.bullets, true);
 
         // update score.
         this.distance++;

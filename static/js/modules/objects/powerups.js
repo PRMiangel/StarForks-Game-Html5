@@ -15,6 +15,16 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
     };
     gamejs.utils.objects.extend(Powerup, gamejs.sprite.Sprite);
 
+    Powerup.prototype.getType = function() {
+        return [
+            'cloning',
+            'forking',
+            'branching',
+            'pulling',
+            'pushing'
+        ][this.type];
+    };
+
     Powerup.prototype.update = function(msDuration, world) {
         if (world.player.pulling > 0) {
             var angle = $m.normaliseRadians($v.angle([1, 0], $v.subtract(world.player.position, this.rect.topleft)));
@@ -27,11 +37,11 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
 
     Powerup.prototype.upgrade = function(player) {
         switch (this.type) {
-            case 0: this.clone(player); break;
-            case 1: this.fork(player); break;
-            case 2: this.branch(player); break;
-            case 3: this.pull(player); break;
-            case 4: this.push(player); break;
+            case 0: return this.clone(player); break;
+            case 1: return this.fork(player); break;
+            case 2: return this.branch(player); break;
+            case 3: return this.pull(player); break;
+            case 4: return this.push(player); break;
         }
     };
 
@@ -39,7 +49,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * Cloning: clones an extra life for the player
      */
     Powerup.prototype.clone = function(player) {
-        if (player.lifes < 4) player.lifes++;
+        if (player.lifes < 4) return player.lifes++;
         return;
     };
 
@@ -47,7 +57,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * Forking: more forking player power!
      */
     Powerup.prototype.fork = function(player) {
-        if (player.ammoStrength < 5) player.ammoStrength++;
+        if (player.ammoStrength < 5) return player.ammoStrength++;
         return;
     };
 
@@ -55,7 +65,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * Branching: branch player's laser weapons
      */
     Powerup.prototype.branch = function(player) {
-        if (player.ammoRatio < 3) player.ammoRatio++;
+        if (player.ammoRatio < 3) return player.ammoRatio++;
         return;
     };
 
@@ -64,7 +74,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      */
     Powerup.prototype.pull = function(player) {
         player.pulling += 30000;
-        return;
+        return true;
     };
 
     /*
@@ -73,7 +83,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      */
     Powerup.prototype.push = function(player) {
         player.pushing += 30000;
-        return;
+        return true;
     };
 
 
