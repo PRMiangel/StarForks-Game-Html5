@@ -81,7 +81,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
                 enemy = collision.b;
             if (utils.outOfScreen(enemy.rect.topleft, enemy.image.getSize())) return;  // do not hurt the ones out of the screen
             self.score += enemy.getDamage(laser.strength);
-            self.accuracy[1]++;
+            self.accuracy[1] += self.player.isPushing() ? 0 : 1;
 
             if (enemy.isDead() && Math.random() < .08)
                 self.powerups.add(new powerups.Powerup(enemy.rect.center));
@@ -89,14 +89,16 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
         if (this.player.isUntouchable()) return;
 
         _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
-            self.gameOver = self.player.getDamage();
-            self.player.ammoRatio = 1;
+            if (!self.player.isPushing()) {
+                self.gameOver = self.player.getDamage();
+                self.player.ammoRatio = 1;
+            }
             enemy.kill();
         });
 
         // update score.
         this.distance++;
-        this.accuracy[0] += this.player.fired;
+        this.accuracy[0] += self.player.isPushing() ? 0 : this.player.fired;
     };
 
     return {

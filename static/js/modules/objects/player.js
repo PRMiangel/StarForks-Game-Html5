@@ -215,13 +215,13 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
         //
         // firing
         this.fired = false;
-        if (this.firing) {
+        if (this.firing || this.isPushing()) {
             this.fireRate -= msDuration;
             if (this.fireRate < 0) {
                 this.fireRate = 1000 / globals.game.fps * 2;
-                if (this.ammoRatio == 1)
+                if (this.ammoRatio == 1 && !this.isPushing())
                     this.fireDeviation = 0;
-                else if (this.ammoRatio == 2)
+                else if (this.ammoRatio == 2 && !this.isPushing())
                     this.fireDeviation = this.fireDeviation == 0 ? 25 : -this.fireDeviation;
                 else {
                     if (this.fireDeviation < 0)
@@ -279,6 +279,10 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
         this.hit = true;
         this.hitAnimation = true;
         return (this.lifes < 0);
+    };
+
+    Player.prototype.isPushing = function() {
+        return this.pushing > 0;
     };
 
     Player.prototype.isUntouchable = function() {
