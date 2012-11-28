@@ -76,6 +76,12 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
         gamejs.draw.rect(surfaces.forkPower, '#FFFFFF', new gamejs.Rect([87, 4], [world.player.ammoStrength * 96 / 5, 8]));
         surfaces.forkPower.setAlpha(0.5);
 
+        // pushing power
+        if (world.player.isPushing()) {
+            gamejs.draw.rect(surfaces.fullscreen, '#ffd324', new gamejs.Rect([0, 0], globals.game.screenSize));
+            surfaces.fullscreen.setAlpha(0.75);
+        }
+
         // missiles
         surfaces.stashing.blit(missileSprite);
         surfaces.stashing.blit(fonts.mini.render('x ' + world.player.missiles, '#FFFFFF'), [55, 55]);

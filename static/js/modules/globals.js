@@ -14,6 +14,7 @@ define(function() {
             sprite: 'static/images/playerSprite.png',
             lifeSprite: 'static/images/life.png',
             laserSprite: 'static/images/laserGreen.png',
+            coolLaserSprite: 'static/images/laserYellow.png',
             missileSprite: 'static/images/missile.png',
             speedSprite: 'static/images/background/speedLine.png',
             defaultLifes: 4,

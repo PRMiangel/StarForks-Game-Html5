@@ -230,7 +230,14 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
                     else
                         this.fireDeviation = this.fireDeviation == 0 ? 30 : -this.fireDeviation;
                 }
-                this.lasers.add(new laser.Laser(globals.player.laserSprite, $v.add(this.position, [this.fireDeviation * Math.cos(this.orientation), this.fireDeviation * Math.sin(this.orientation)]), this.orientation, LASER_TYPES[this.ammoStrength-1]));
+                this.lasers.add(
+                    new laser.Laser(
+                        this.isPushing() ? globals.player.coolLaserSprite : globals.player.laserSprite,
+                        $v.add(this.position, [this.fireDeviation * Math.cos(this.orientation), this.fireDeviation * Math.sin(this.orientation)]),
+                        this.orientation,
+                        LASER_TYPES[this.ammoStrength-1]
+                    )
+                );
                 this.fired = true;
             }
         } else this.fireRate -= msDuration;
