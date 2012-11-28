@@ -27,8 +27,8 @@ define(function() {
         },
         enemies: {
             images: {
-                explorer: 'static/images/enemyShip.png',
-                meteor: 'static/images/meteorBig.png'
+                explorer: 'static/images/enemies/explorer.png',
+                meteor: 'static/images/enemies/meteorBig.png'
             },
             laserSprite: 'static/images/laserRed.png'
         },
