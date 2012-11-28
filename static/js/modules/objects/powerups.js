@@ -2,11 +2,12 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
     var Powerup = function(center) {
         Powerup.superConstructor.apply(this, arguments);
 
-        this.type = utils.randomBetween(0, 4); // 0: Cloning
+        this.type = utils.randomBetween(0, 5); // 0: Cloning
                                                // 1: Forking
                                                // 2: Branching
                                                // 3: Pulling
                                                // 4: Pushing
+                                               // 5: Stashing
         this.image = gamejs.image.load(globals.powerups[this.type]);
         this.rect  = new gamejs.Rect($v.add(center, [-this.image.getSize()[0] / 2, -this.image.getSize()[1] / 2]));
         this.mask  = gamejs.mask.fromSurface(this.image);
@@ -21,7 +22,8 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
             'forking',
             'branching',
             'pulling',
-            'pushing'
+            'pushing',
+            'stashing'
         ][this.type];
     };
 
@@ -42,6 +44,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
             case 2: return this.branch(player); break;
             case 3: return this.pull(player); break;
             case 4: return this.push(player); break;
+            case 5: return this.stash(player); break;
         }
     };
 
@@ -83,6 +86,14 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      */
     Powerup.prototype.push = function(player) {
         player.pushing = 20000;
+        return true;
+    };
+
+    /*
+     * Stashing: player will stash a really cool misil.
+     */
+    Powerup.prototype.stash = function(player) {
+        player.missiles++;
         return true;
     };
 

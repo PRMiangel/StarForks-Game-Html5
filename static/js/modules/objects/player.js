@@ -74,6 +74,7 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
         this.fireDeviation = 0;
         this.ammoRatio = 1;
         this.ammoStrength = 1;
+        this.missiles = 0;
 
         // powers
         this.pulling = 0;

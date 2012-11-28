@@ -14,6 +14,7 @@ define(function() {
             sprite: 'static/images/playerSprite.png',
             lifeSprite: 'static/images/life.png',
             laserSprite: 'static/images/laserGreen.png',
+            missileSprite: 'static/images/missile.png',
             speedSprite: 'static/images/background/speedLine.png',
             defaultLifes: 4,
             width: 99,
@@ -36,6 +37,7 @@ define(function() {
             2: 'static/images/powerups/branching.png',
             3: 'static/images/powerups/pulling.png',
             4: 'static/images/powerups/pushing.png',
+            5: 'static/images/powerups/stashing.png',
             screenDuration: 835
         },
         physics: {

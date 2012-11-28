@@ -3,12 +3,14 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
             fullscreen: new gamejs.Surface(globals.game.screenSize),
             levelDuration: new gamejs.Surface([globals.game.screenSize[0] - 20, 12]),
             lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
-            forkPower: new gamejs.Surface([185, 16])
+            forkPower: new gamejs.Surface([185, 16]),
+            stashing: new gamejs.Surface([100, 71])
         },
         texts = {},
         fonts,
         playerHit,
         lifeSprite,
+        missileSprite,
         powerups = [];
 
     /*
@@ -45,7 +47,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
             display.blit(surfaces.fullscreen);
             // now the instructions
             var pause = fonts.big.render('PAUSE', '#FFFFFF');
-            var esc   = fonts.small.render('Press ESC to unpause', '#FFFFFF');
+            var esc   = fonts.small.render('Press ESC to continue', '#FFFFFF');
             display.blit(pause, [globals.game.screenSize[0] / 2 - pause.getSize()[0] / 2, globals.game.screenSize[1] / 2 - pause.getSize()[1] - 2]);
             display.blit(esc, [globals.game.screenSize[0] / 2 - esc.getSize()[0] / 2, globals.game.screenSize[1] / 2 + 2]);
             return;
@@ -74,6 +76,11 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
         gamejs.draw.rect(surfaces.forkPower, '#FFFFFF', new gamejs.Rect([87, 4], [world.player.ammoStrength * 96 / 5, 8]));
         surfaces.forkPower.setAlpha(0.5);
 
+        // missiles
+        surfaces.stashing.blit(missileSprite);
+        surfaces.stashing.blit(fonts.mini.render('x ' + world.player.missiles, '#FFFFFF'), [55, 55]);
+        surfaces.stashing.setAlpha(world.player.missiles > 0 ? 0.25 : 0.75);
+
         // score
         var score = fonts.small.render(world.score, '#FFFFFF');
         score.setAlpha(0.75);
@@ -98,6 +105,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
 
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
+        display.blit(surfaces.stashing, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - surfaces.stashing.getSize()[1] - 30]);
         display.blit(surfaces.forkPower, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - 20]);
         display.blit(surfaces.levelDuration, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - 10]);
         display.blit(surfaces.fullscreen);
@@ -107,7 +115,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
      * Init images.
      */
     var init = function() {
-        lifeSprite = gamejs.image.load(globals.player.lifeSprite);
+        lifeSprite    = gamejs.image.load(globals.player.lifeSprite);
+        missileSprite = gamejs.transform.rotate(gamejs.image.load(globals.player.missileSprite), 180);
         fonts = {
             big: new gamejs.font.Font('64px Aller'),
             small: new gamejs.font.Font('24px Aller'),
@@ -120,7 +129,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
             cloning:   fonts.small.render('Clone a new life!', '#FFFFFF'),
             forking:   fonts.small.render('Fork your power!', '#FFFFFF'),
             pulling:   fonts.small.render('Pull new powers!', '#FFFFFF'),
-            pushing:   fonts.small.render('Push your enemies!', '#FFFFFF')
+            pushing:   fonts.small.render('Push your enemies!', '#FFFFFF'),
+            stashing:  fonts.small.render('Stashing a new Misil!', '#FFFFFF')
         };
     };
 

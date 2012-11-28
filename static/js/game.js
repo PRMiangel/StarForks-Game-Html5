@@ -16,6 +16,7 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         globals.starsField.starSmall,
         globals.player.sprite,
         globals.player.lifeSprite,
+        globals.player.missileSprite,
         globals.player.laserSprite,
         globals.player.speedSprite,
         globals.enemies.images.explorer,
@@ -25,7 +26,8 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         globals.powerups[1],
         globals.powerups[2],
         globals.powerups[3],
-        globals.powerups[4]
+        globals.powerups[4],
+        globals.powerups[5]
     ]);
 
     globals.screenSize = [$('gjs-canvas').attr('width'), $('gjs-canvas').attr('height')];
