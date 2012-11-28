@@ -85,7 +85,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * for 30 seconds.
      */
     Powerup.prototype.push = function(player) {
-        player.pushing = 20000;
+        player.pushing = 12000;
         return true;
     };
 
