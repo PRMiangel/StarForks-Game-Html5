@@ -14,7 +14,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         fireDeviation = fireDeviation || 25;
 
         // internal
-        this.orientation = 3 * Math.PI / 2;
+        var orientationVariance = Math.random() * Math.PI / 64 * (Math.random() < 0.5 ? 1 : -1);  // ugh
+        this.orientation = 3 * Math.PI / 2 + orientationVariance;
 
         // basics...
         this.image = gamejs.transform.rotate(gamejs.image.load(spriteUrl), $m.degrees(this.orientation + Math.PI));
@@ -124,7 +125,6 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         if (this.rect.left < -this.image.getSize()[0] || this.rect.top < -this.image.getSize()[1] || this.rect.top > globals.game.screenSize[1])
             this.kill();
     };
-
 
 
     //
