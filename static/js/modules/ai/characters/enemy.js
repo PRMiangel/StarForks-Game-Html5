@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/globals'], function(gamejs, globals) {
+define(['gamejs', 'modules/globals', 'modules/helpers/utils'], function(gamejs, globals, utils) {
     /*
      * In this module we implement Enemy, the base class for all the monsters.
      */
@@ -14,6 +14,10 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
 
     Enemy.prototype.canShoot = function() {
         return false;
+    };
+
+    Enemy.prototype.canGetDamage = function() {
+        return !utils.outOfScreen(this.rect.topleft, this.image.getSize());  // do not hurt the ones out of the screen
     };
 
     Enemy.prototype.shoot = function() {

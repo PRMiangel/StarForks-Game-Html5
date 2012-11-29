@@ -76,10 +76,11 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
         });
 
         // then everything else
-        _.each(gamejs.sprite.groupCollide(this.player.lasers, this.enemies, true, false, gamejs.sprite.collideMask), function(collision) {
+        _.each(gamejs.sprite.groupCollide(this.player.lasers, this.enemies, false, false, gamejs.sprite.collideMask), function(collision) {
             var laser = collision.a,
                 enemy = collision.b;
-            if (utils.outOfScreen(enemy.rect.topleft, enemy.image.getSize())) return;  // do not hurt the ones out of the screen
+            if (!enemy.canGetDamage()) return;
+            laser.kill();
             self.score += enemy.getDamage(laser.strength);
             self.accuracy[1] += self.player.isPushing() ? 0 : 1;
 
