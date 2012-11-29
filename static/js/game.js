@@ -10,7 +10,7 @@ require.config({
 
 require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gamejs, main, globals) {
     // game init
-    gamejs.preload([
+    var images = [
         globals.starsField.image,
         globals.starsField.cloud,
         globals.starsField.starSmall,
@@ -20,16 +20,13 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         globals.player.coolLaserSprite,
         globals.player.missileSprite,
         globals.player.speedSprite,
-        globals.enemies.images.explorer,
-        globals.enemies.images.meteor,
-        globals.enemies.laserSprite,
-        globals.powerups[0],
-        globals.powerups[1],
-        globals.powerups[2],
-        globals.powerups[3],
-        globals.powerups[4],
-        globals.powerups[5]
-    ]);
+        globals.enemies.laserSprite
+    ];
+    for (var key in globals.enemies.images)
+        images.push(globals.enemies.images[key]);
+    globals.powerups.images.forEach(function(image) { images.push(image); });
+
+    gamejs.preload(images);
 
     globals.screenSize = [$('gjs-canvas').attr('width'), $('gjs-canvas').attr('height')];
     gamejs.ready(main);
