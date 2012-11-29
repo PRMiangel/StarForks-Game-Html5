@@ -87,9 +87,9 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
         this.mask         = gamejs.mask.fromSurface(this.image);
         // change the boss' position and direction
         if (this.rect.left > globals.game.screenSize[0] / 2)
-            this.rect.left = 35;
+            this.rect.left = 0;
         else
-            this.rect.left = globals.game.screenSize[0] - 160;
+            this.rect.left = globals.game.screenSize[0] - 120;
         this.rect.top     = Math.random() * (globals.game.screenSize[1] - this.image.getSize()[1]);
     };
 
@@ -100,14 +100,23 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
     };
 
     Boss.prototype.shoot = function () {
-        return raiders.Raider.prototype.shoot.call(this);
+        this.nextFire = this.fireRate;
+
+        var position = $v.add(this.rect.center, [0, this.firingSide === 0 ? this.fireDeviation : -this.fireDeviation]);
+
+        this.firingSide = (this.firingSide + 1) % 2;
+
+        return new laser.Laser(
+            globals.enemies.laserSprite, position, this.orientation,
+            { 'speed': this.firingSpeed, 'life': 10 }
+        );
     };
 
     Boss.prototype.update = function (msDuration) {
         if (this.entering) {
             this.rect.left -= 2;
-            if (this.rect.left <= globals.game.screenSize[0] - 160) {
-                this.rect.left = globals.game.screenSize[0] - 160;
+            if (this.rect.left <= globals.game.screenSize[0] - 120) {
+                this.rect.left = globals.game.screenSize[0] - 120;
                 this.entering = false;
                 this.appearing  = 0;
             }
