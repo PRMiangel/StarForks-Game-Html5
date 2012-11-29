@@ -8,7 +8,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
                                                // 3: Pulling
                                                // 4: Pushing
                                                // 5: Stashing
-        this.image = gamejs.image.load(globals.powerups[this.type]);
+        this.image = gamejs.image.load(globals.powerups.images[this.type]);
         this.rect  = new gamejs.Rect($v.add(center, [-this.image.getSize()[0] / 2, -this.image.getSize()[1] / 2]));
         this.mask  = gamejs.mask.fromSurface(this.image);
 

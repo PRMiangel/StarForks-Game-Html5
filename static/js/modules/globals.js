@@ -33,12 +33,14 @@ define(function() {
             laserSprite: 'static/images/laserRed.png'
         },
         powerups: {
-            0: 'static/images/powerups/cloning.png',
-            1: 'static/images/powerups/forking.png',
-            2: 'static/images/powerups/branching.png',
-            3: 'static/images/powerups/pulling.png',
-            4: 'static/images/powerups/pushing.png',
-            5: 'static/images/powerups/stashing.png',
+            images: [
+                'static/images/powerups/cloning.png',
+                'static/images/powerups/forking.png',
+                'static/images/powerups/branching.png',
+                'static/images/powerups/pulling.png',
+                'static/images/powerups/pushing.png',
+                'static/images/powerups/stashing.png'
+            ],
             screenDuration: 835
         },
         physics: {
