@@ -27,6 +27,7 @@ define(function() {
         },
         enemies: {
             images: {
+                boss: 'static/images/enemies/boss.png',
                 explorer: 'static/images/enemies/explorer.png',
                 heavyexplorer: 'static/images/enemies/heavyExplorer.png',
                 meteor: 'static/images/enemies/meteorBig.png',

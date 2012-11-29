@@ -36,6 +36,53 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
 
 
     /*
+     * BossLevel.
+     * Especial level where the duration is defined by the boss life.
+     */
+    var BossLevel = function(opts) {
+        BossLevel.superConstructor.apply(this, arguments);
+        this.boss = null;
+        this.bossLife = 0;
+        this.init = 0;
+        this.maxEnemies = 0;
+        this.enemies = [
+            {type: foes.Meteor, prob: 1}
+        ];
+    };
+    gamejs.utils.objects.extend(BossLevel, Level);
+
+    BossLevel.prototype.update = function(msDuration, world) {
+        this.init -= msDuration;
+        if (this.init > 0) return;
+        if (this.boss === null) {
+            this.boss = new foes.Boss(world.player);
+            this.boss.setInitialPosition();
+            this.bossLife = this.boss.life;
+            world.enemies.add(this.boss);
+        }
+        // if (this.boss.life < this.bossLife / 2)
+        //     // shoot more meteors
+        //     this.maxEnemies = 6;
+        // if (this.boss.life < this.bossLife / 4)
+        //     this.enemies = [
+        //         {type: foes.Meteor, prob: .7},
+        //         {type: foes.Explorer, prob: .3}
+        //     ];
+        // var enemy;
+        // while (world.enemies.sprites().length < this.maxEnemies) {
+        //     enemy = this.pickEnemy();
+        //     enemy = new enemy.type();
+        //     enemy.setInitialPosition();
+        //     world.enemies.add(enemy);
+        // }
+    };
+
+    BossLevel.prototype.isOver = function (time) {
+        return this.boss !== null && (this.boss === undefined || this.boss.life <= 0);
+    };
+
+
+    /*
      * Module helper functions
      */
     var list = [];
@@ -47,7 +94,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
                 maxEnemies: 5,
                 enemies: [
                     {type: foes.Meteor, prob: .7},
-                    {type: foes.Explorer, prob: .3}
+                    {type: foes.Explorer, prob: .3},
                 ]
             }),
             new Level({
@@ -66,7 +113,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
                     {type: foes.Explorer, prob: .4},
                     {type: foes.HeavyExplorer, prob: .4}
                 ]
-            })
+            }),
+            new BossLevel()
         );
     };
 

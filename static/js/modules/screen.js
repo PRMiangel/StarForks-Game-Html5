@@ -4,7 +4,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
             levelDuration: new gamejs.Surface([globals.game.screenSize[0] - 20, 12]),
             lifes: new gamejs.Surface([40 * globals.player.defaultLifes, 27]),
             forkPower: new gamejs.Surface([185, 16]),
-            stashing: new gamejs.Surface([100, 71])
+            stashing: new gamejs.Surface([100, 71]),
+            bossLife: new gamejs.Surface([185, 16])
         },
         texts = {},
         fonts,
@@ -109,11 +110,20 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
             display.blit(powerSurface, [globals.game.screenSize[0] / 2 - powerSurface.getSize()[0] / 2, 40]);
         });
 
+        // boss life, if any.
+        if (world.level.boss) {
+            surfaces.bossLife.blit(texts.bossLife, [0, 0]);
+            gamejs.draw.rect(surfaces.bossLife, '#000000', new gamejs.Rect([62, 2], [113, 12]));
+            gamejs.draw.rect(surfaces.bossLife, '#FFFFFF', new gamejs.Rect([64, 4], [world.level.boss.life * 109 / world.level.bossLife, 8]));
+            surfaces.bossLife.setAlpha(0.25);
+        }
+
         // blit everything in display
         display.blit(surfaces.lifes, [10, 10]);
         display.blit(surfaces.stashing, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - surfaces.stashing.getSize()[1] - 30]);
         display.blit(surfaces.forkPower, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - 20]);
         display.blit(surfaces.levelDuration, [10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - 10]);
+        display.blit(surfaces.bossLife, [globals.game.screenSize[0] - surfaces.bossLife.getSize()[0] - 10, globals.game.screenSize[1] - surfaces.levelDuration.getSize()[1] - surfaces.forkPower.getSize()[1] - 20]);
         display.blit(surfaces.fullscreen);
     };
 
@@ -129,6 +139,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
             mini: new gamejs.font.Font('14px Aller')
         };
         texts = {
+            bossLife: fonts.mini.render('Boss Life', '#FFFFFF'),
             forkPower: fonts.mini.render('Fork Power', '#FFFFFF'),
             // powerups
             branching: fonts.small.render('Branch your lasers!', '#FFFFFF'),

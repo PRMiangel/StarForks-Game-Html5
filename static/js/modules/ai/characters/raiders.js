@@ -3,7 +3,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
      * Raider ship.
      * A fast ship that can shoot two lasers at a time.
      */
-    var Raider = function(spriteUrl, speed, life, fireRate, fireDeviation) {
+    var Raider = function(spriteUrl, speed, life, fireRate, fireDeviation, orientation) {
         Raider.superConstructor.apply(this, arguments);
 
         // init arguments
@@ -12,10 +12,10 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         life          = life || 5;
         fireRate      = fireRate || 1000 / globals.game.fps * 30;
         fireDeviation = fireDeviation || 25;
+        orientation   = 3 * Math.PI / 2 + (Math.random() * Math.PI / 64 * (Math.random() < 0.5 ? 1 : -1));  // ugh
 
         // internal
-        var orientationVariance = Math.random() * Math.PI / 64 * (Math.random() < 0.5 ? 1 : -1);  // ugh
-        this.orientation = 3 * Math.PI / 2 + orientationVariance;
+        this.orientation = orientation;
 
         // basics...
         this.image = gamejs.transform.rotate(gamejs.image.load(spriteUrl), $m.degrees(this.orientation + Math.PI));
@@ -62,21 +62,25 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
      * A fast and strong ship that can quickly shoot two lasers at a time and
      * announce its appearance into screen.
      */
-    var HeavyRaider = function() {
+    var HeavyRaider = function(spriteUrl, speed, life, fireRate, fireDeviation) {
         var args = [].splice.call(arguments, 0);
+
+        spriteUrl     = spriteUrl || globals.enemies.images.heavyraider;
+        speed         = speed || utils.randomBetween(0.9, 1, false) * 10;
+        life          = life || 7;
+        fireRate      = fireRate || 1000 / globals.game.fps * 25;
+        fireDeviation = fireDeviation || 50;
+
         HeavyRaider.superConstructor.apply(this, args.concat([
-            globals.enemies.images.heavyraider,
-            utils.randomBetween(0.9, 1, false) * 10,
-            7,
-            1000 / globals.game.fps * 25,
-            50
+            spriteUrl, speed, life, fireRate, fireDeviation
         ]));
+
         this.appearing = 4000;
     };
     gamejs.utils.objects.extend(HeavyRaider, Raider);
 
     HeavyRaider.prototype.canGetDamage = function() {
-        return !this.appearing && enemy.Enemy.prototype.canGetDamage.call(this);
+        return this.appearing <= 0 && enemy.Enemy.prototype.canGetDamage.call(this);
     };
 
     HeavyRaider.prototype.canShoot = function(msDuration) {
