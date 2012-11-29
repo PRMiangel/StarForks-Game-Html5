@@ -9,7 +9,7 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
         Boss.superConstructor.apply(this, args.concat([
             globals.enemies.images.boss,
             4,
-            250,
+            1500,
             1000 / globals.game.fps * 15,
             55,
             3 * Math.PI / 2

@@ -9,7 +9,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         // init arguments
         spriteUrl     = spriteUrl || globals.enemies.images.raider;
         speed         = speed || utils.randomBetween(0.9, 1, false) * 10;
-        life          = life || 5;
+        life          = life || 9;
         fireRate      = fireRate || 1000 / globals.game.fps * 30;
         fireDeviation = fireDeviation || 25;
         orientation   = 3 * Math.PI / 2 + (Math.random() * Math.PI / 64 * (Math.random() < 0.5 ? 1 : -1));  // ugh
@@ -67,7 +67,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
 
         spriteUrl     = spriteUrl || globals.enemies.images.heavyraider;
         speed         = speed || utils.randomBetween(0.9, 1, false) * 10;
-        life          = life || 7;
+        life          = life || 16;
         fireRate      = fireRate || 1000 / globals.game.fps * 25;
         fireDeviation = fireDeviation || 50;
 

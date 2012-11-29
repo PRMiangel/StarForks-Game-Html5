@@ -71,7 +71,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         HeavyExplorer.superConstructor.apply(this, args.concat([
             globals.enemies.images.heavyexplorer,
             utils.randomBetween(0.9, 1, false) * 6,
-            7,
+            11,
             1000 / globals.game.fps * 40
         ]));
         this.rotation = Math.random() * Math.PI / 2048 * (Math.random() < 0.5 ? 1 : -1);  // ugh;
