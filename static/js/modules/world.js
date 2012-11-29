@@ -24,7 +24,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
         this.currentPowerups = [];
 
         levels.init();
-        this.level = levels.get(this.currentLevel);
+        this.level = levels.shift();
     };
 
     World.prototype.draw = function(display) {
@@ -45,9 +45,12 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
 
         this.currentTime += msDuration;
         if (this.level.isOver(this.currentTime)) {
+            this.level.speed += 1;
+            levels.push(this.level);
+            this.level = levels.shift();
+
             this.currentLevel += 1;
             this.currentTime   = 0;
-            this.level         = levels.get(this.currentLevel);
             // maybe upgrade score.
         }
 

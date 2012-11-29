@@ -93,7 +93,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
     var init = function() {
         list.push(
             new Level({
-                duration: 15000,
+                duration: 10000,
                 maxEnemies: 6,
                 enemies: [
                     {type: foes.Meteor, prob: 1}
@@ -154,11 +154,21 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         return list[i];
     };
 
+    var push = function (level) {
+        return list.push(level);
+    };
+
+    var shift = function () {
+        return list.shift();
+    };
+
 
     //
     // Return API
     return {
         init: init,
-        get: get
+        get: get,
+        push: push,
+        shift: shift
     };
 });
