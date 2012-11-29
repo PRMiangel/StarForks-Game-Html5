@@ -28,6 +28,7 @@ define(function() {
         enemies: {
             images: {
                 explorer: 'static/images/enemies/explorer.png',
+                heavyexplorer: 'static/images/enemies/heavyExplorer.png',
                 meteor: 'static/images/enemies/meteorBig.png'
             },
             laserSprite: 'static/images/laserRed.png'

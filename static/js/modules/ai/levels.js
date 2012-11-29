@@ -39,7 +39,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
     var init = function() {
         list.push(
             new Level({
-                duration: 45000,
+                duration: 60000,
                 maxEnemies: 5,
                 enemies: [
                     {type: foes.Meteor, prob: .7},
@@ -47,18 +47,20 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
                 ]
             }),
             new Level({
-                duration: 60000,
-                maxEnemies: 7,
+                duration: 75000,
+                maxEnemies: 8,
                 enemies: [
-                    {type: foes.Meteor, prob: .6},
-                    {type: foes.Explorer, prob: .4}
+                    {type: foes.Meteor, prob: .5},
+                    {type: foes.Explorer, prob: .3},
+                    {type: foes.HeavyExplorer, prob: .2}
                 ]
             }),
             new Level({
                 maxEnemies: 9,
                 enemies: [
-                    {type: foes.Meteor, prob: .5},
-                    {type: foes.Explorer, prob: .5}
+                    {type: foes.Meteor, prob: .2},
+                    {type: foes.Explorer, prob: .4},
+                    {type: foes.HeavyExplorer, prob: .4}
                 ]
             })
         );
