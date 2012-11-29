@@ -83,7 +83,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
             self.score += enemy.getDamage(laser.strength);
             self.accuracy[1] += self.player.isPushing() ? 0 : 1;
 
-            if (enemy.isDead() && Math.random() < .1)
+            if (enemy.isDead() && Math.random() < .15)
                 self.powerups.add(new powerups.Powerup(enemy.rect.center));
         });
         if (this.player.isUntouchable()) return;
