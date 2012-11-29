@@ -4,7 +4,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
      * Really dumb ships that fire just once in a while and move straight
      * forward in a semi random direction.
      */
-    var Explorer = function(spriteUrl, speed, life, fireRate) {
+    var Explorer = function(level, spriteUrl, speed, life, fireRate) {
         Explorer.superConstructor.apply(this, arguments);
 
         // init arguments
@@ -53,8 +53,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
     };
 
     Explorer.prototype.update = function(msDuration) {
-        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2);
-        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2);
+        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
+        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
         if (this.rect.left < -this.image.getSize()[0] || this.rect.top < -this.image.getSize()[1] || this.rect.top > globals.game.screenSize[1])
             this.kill();
     };
@@ -66,7 +66,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
      * explorer and move in a semi random direction with a semi random rotation
      * speed.
      */
-    var HeavyExplorer = function() {
+    var HeavyExplorer = function(level) {
         var args = [].splice.call(arguments, 0);
         HeavyExplorer.superConstructor.apply(this, args.concat([
             globals.enemies.images.heavyexplorer,
@@ -79,8 +79,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
     gamejs.utils.objects.extend(HeavyExplorer, Explorer);
 
     HeavyExplorer.prototype.update = function(msDuration) {
-        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2);
-        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2);
+        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
+        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
         if (this.rect.left < -this.image.getSize()[0] || this.rect.top < -this.image.getSize()[1] || this.rect.top > globals.game.screenSize[1])
             this.kill();
         //this.orientation += this.rotation;

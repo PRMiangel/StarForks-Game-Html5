@@ -5,7 +5,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
      * generating them
      */
     var Level = function(opts) {
-        this.speed = 5;
+        this.speed = 1;
         _.extend(this, opts);
     };
 
@@ -14,7 +14,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
 
         while (world.enemies.sprites().length < this.maxEnemies) {
             enemy = this.pickEnemy();
-            enemy = new enemy.type();
+            enemy = new enemy.type(this);
             enemy.setInitialPosition();
             world.enemies.add(enemy);
         }
@@ -55,7 +55,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         this.init -= msDuration;
         if (this.init > 0) return;
         if (this.boss === null) {
-            this.boss = new foes.Boss(world.player);
+            this.boss = new foes.Boss(this, world.player);
             this.boss.setInitialPosition();
             this.bossLife = this.boss.life;
             world.enemies.add(this.boss);

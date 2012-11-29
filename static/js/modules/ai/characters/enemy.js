@@ -6,8 +6,9 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils'], function(gamejs, 
     /*
      * Enemy.
      */
-    var Enemy = function() {
+    var Enemy = function(level) {
         Enemy.superConstructor.apply(this, arguments);
+        this.level = level;
         this.life = 1;
     };
     gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
@@ -44,7 +45,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils'], function(gamejs, 
      * ShooterEnemy.
      * This ones can shoot lasers.
      */
-    var ShooterEnemy = function() {
+    var ShooterEnemy = function(level) {
         ShooterEnemy.superConstructor.apply(this, arguments);
     };
     gamejs.utils.objects.extend(ShooterEnemy, Enemy);

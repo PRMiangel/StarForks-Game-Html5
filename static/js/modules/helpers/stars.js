@@ -38,8 +38,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
     };
 
     StarsField.prototype.update = function(msDuration, level) {
-        this.offset1[0] -= level.speed;
-        this.offset2[0] -= level.speed;
+        this.offset1[0] -= level.speed * 4;
+        this.offset2[0] -= level.speed * 4;
 
         if (this.offset1[0] <= globals.game.screenSize[0] - size[0])
             this.offset2[0] = this.offset1[0] + size[0];

@@ -3,7 +3,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
      * Raider ship.
      * A fast ship that can shoot two lasers at a time.
      */
-    var Raider = function(spriteUrl, speed, life, fireRate, fireDeviation, orientation) {
+    var Raider = function(level, spriteUrl, speed, life, fireRate, fireDeviation, orientation) {
         Raider.superConstructor.apply(this, arguments);
 
         // init arguments
@@ -50,8 +50,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
     };
 
     Raider.prototype.update = function(msDuration) {
-        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2);
-        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2);
+        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
+        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
         if (this.rect.left < -this.image.getSize()[0] || this.rect.top < -this.image.getSize()[1] || this.rect.top > globals.game.screenSize[1])
             this.kill();
     };
@@ -62,7 +62,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
      * A fast and strong ship that can quickly shoot two lasers at a time and
      * announce its appearance into screen.
      */
-    var HeavyRaider = function(spriteUrl, speed, life, fireRate, fireDeviation) {
+    var HeavyRaider = function(level, spriteUrl, speed, life, fireRate, fireDeviation) {
         var args = [].splice.call(arguments, 0);
 
         spriteUrl     = spriteUrl || globals.enemies.images.heavyraider;
@@ -124,8 +124,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
             if (this.appearing < 0) this.appearing = false;
             return;
         }
-        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2);
-        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2);
+        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
+        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2) * ((Math.pow(this.level.speed, 2) / 10) + 1);
         if (this.rect.left < -this.image.getSize()[0] || this.rect.top < -this.image.getSize()[1] || this.rect.top > globals.game.screenSize[1])
             this.kill();
     };

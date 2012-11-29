@@ -30,10 +30,10 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
     Powerup.prototype.update = function(msDuration, world) {
         if (world.player.pulling > 0) {
             var angle = $m.normaliseRadians($v.angle([1, 0], $v.subtract(world.player.position, this.rect.topleft)));
-            this.rect.left += world.level.speed * 4 * Math.cos(angle);
-            this.rect.top  += world.level.speed * 4 * Math.sin(angle);
+            this.rect.left += world.level.speed * 16 * Math.cos(angle);
+            this.rect.top  += world.level.speed * 16 * Math.sin(angle);
         } else
-            this.rect.left -= world.level.speed;
+            this.rect.left -= world.level.speed * 4;
         return;
     };
 

@@ -2,7 +2,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/hel
     /*
      * Meteor.
      */
-    var Meteor = function() {
+    var Meteor = function(level) {
         Meteor.superConstructor.apply(this, arguments);
 
         // basics...
@@ -13,7 +13,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/hel
 
         // this ones might vary according to the level, but are common to every
         // enemy sprite.
-        this.speed     = utils.randomBetween(0.5, 1, false) * 250;
+        this.speed     = utils.randomBetween(0.5, 1, false) * 250 * ((Math.pow(this.level.speed, 2) / 10) + 1);
         this.life      = 1;
         this.killScore = 2;
         // this.strength = 5; // ?

@@ -4,9 +4,10 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
      * A fast and strong ship that can quickly shoot two lasers at a time and
      * announce its appearance into screen.
      */
-    var Boss = function(player) {
+    var Boss = function(level, player) {
         var args = [];
         Boss.superConstructor.apply(this, args.concat([
+            level,
             globals.enemies.images.boss,
             4,
             1500,
@@ -137,7 +138,7 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
         }
 
         // movements.
-        this.rect.top += this.direction * this.speed;
+        this.rect.top += this.direction * this.speed  * ((Math.pow(this.level.speed, 2) / 10) + 1);
         var forceChangeDirection = this.rect.top < 0 || this.rect.top > globals.game.screenSize[1] - this.image.getSize()[1];
         if (forceChangeDirection) this.changeDirection = 0;
 
