@@ -43,6 +43,10 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
     gamejs.utils.objects.extend(Laser, gamejs.sprite.Sprite);
 
 
+    Laser.prototype.canGetDamage = function() {
+        return true;
+    };
+
     Laser.prototype.getDamage = function(damage) {
         this.life -= damage;
         if (this.life <= 0) this.kill();  // you dead, dude
