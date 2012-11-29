@@ -57,8 +57,9 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
 
 
     /*
-     * Raider ship.
-     * A fast ship that can shoot two lasers at a time.
+     * HeavyRaider ship.
+     * A fast and strong ship that can quickly shoot two lasers at a time and
+     * announce its appearance into screen.
      */
     var HeavyRaider = function() {
         var args = [].splice.call(arguments, 0);
@@ -69,15 +70,61 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
             1000 / globals.game.fps * 25,
             50
         ]));
+        this.appearing = 4000;
     };
     gamejs.utils.objects.extend(HeavyRaider, Raider);
+
+    HeavyRaider.prototype.canGetDamage = function() {
+        return !this.appearing && enemy.Enemy.prototype.canGetDamage.call(this);
+    };
+
+    HeavyRaider.prototype.canShoot = function(msDuration) {
+        if (this.rect.center > globals.game.screenSize[0] || this.appearing) return;
+        this.nextFire -= msDuration;
+        return this.nextFire < 0;
+    };
+
+    HeavyRaider.prototype.draw = function(surface) {
+        if (this.appearing) {
+            var appearingCircle = new gamejs.Surface([140, 140]),
+                deviation       = this.appearing % 8;
+            var positionDeviation = [0, 8, 16, 8, 0, -8, -16, -8][deviation],
+                alphaDeviation    = deviation % 2 === 0 ? 0.25 : 0.9;
+
+            gamejs.draw.circle(appearingCircle, '#AC3939', [70, 70], 70);
+            appearingCircle.setAlpha(alphaDeviation);
+
+            surface.blit(appearingCircle, $v.add(this.rect.center, [-70 + positionDeviation, -70]));
+        } else
+            surface.blit(this.image, this.rect);
+        return;
+    };
+
+    HeavyRaider.prototype.setInitialPosition = function() {
+        this.rect.left = globals.game.screenSize[0] - Math.random() * 200;
+        this.rect.top  = Math.random() * globals.game.screenSize[1];
+        return;
+    };
 
     HeavyRaider.prototype.shoot = function() {
         var laser = Raider.prototype.shoot.call(this);
         if (this.firingSide === 1)
-            this.nextFire /= 8;
+            this.nextFire /= 12;
         return laser;
     };
+
+    HeavyRaider.prototype.update = function(msDuration) {
+        if (this.appearing) {
+            this.appearing -= msDuration;
+            if (this.appearing < 0) this.appearing = false;
+            return;
+        }
+        this.rect.left += this.speed * Math.cos(this.orientation - Math.PI/2);
+        this.rect.top  += this.speed * Math.sin(this.orientation - Math.PI/2);
+        if (this.rect.left < -this.image.getSize()[0] || this.rect.top < -this.image.getSize()[1] || this.rect.top > globals.game.screenSize[1])
+            this.kill();
+    };
+
 
 
     //
