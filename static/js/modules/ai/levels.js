@@ -93,15 +93,22 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
     var init = function() {
         list.push(
             new Level({
-                duration: 60000,
-                maxEnemies: 5,
+                duration: 15000,
+                maxEnemies: 6,
                 enemies: [
-                    {type: foes.Meteor, prob: .7},
-                    {type: foes.Explorer, prob: .3},
+                    {type: foes.Meteor, prob: 1}
                 ]
             }),
             new Level({
-                duration: 75000,
+                duration: 45000,
+                maxEnemies: 7,
+                enemies: [
+                    {type: foes.Meteor, prob: .6},
+                    {type: foes.Explorer, prob: .4}
+                ]
+            }),
+            new Level({
+                duration: 60000,
                 maxEnemies: 8,
                 enemies: [
                     {type: foes.Meteor, prob: .5},
@@ -110,11 +117,33 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
                 ]
             }),
             new Level({
+                duration: 75000,
                 maxEnemies: 9,
                 enemies: [
                     {type: foes.Meteor, prob: .2},
-                    {type: foes.Explorer, prob: .4},
-                    {type: foes.HeavyExplorer, prob: .4}
+                    {type: foes.Explorer, prob: .3},
+                    {type: foes.HeavyExplorer, prob: .3},
+                    {type: foes.Raider, prob: .2}
+                ]
+            }),
+            new Level({
+                duration: 75000,
+                maxEnemies: 9,
+                enemies: [
+                    {type: foes.Meteor, prob: .2},
+                    {type: foes.HeavyExplorer, prob: .3},
+                    {type: foes.Raider, prob: .3},
+                    {type: foes.HeavyRaider, prob: .2}
+                ]
+            }),
+            new Level({
+                duration: 80000,
+                maxEnemies: 10,
+                enemies: [
+                    {type: foes.Meteor, prob: .2},
+                    {type: foes.HeavyExplorer, prob: .2},
+                    {type: foes.Raider, prob: .3},
+                    {type: foes.HeavyRaider, prob: .3}
                 ]
             }),
             new BossLevel()
