@@ -9,7 +9,7 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
         Boss.superConstructor.apply(this, args.concat([
             globals.enemies.images.boss,
             4,
-            150,
+            250,
             1000 / globals.game.fps * 15,
             55,
             3 * Math.PI / 2
@@ -163,15 +163,21 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
         }
 
         // life changing
+        if (this.life < this.completeLife * 3 / 4) {
+            this.speed = 6;
+            this.fireRate = 1000 / globals.game.fps * 12;
+        }
         if (this.life < this.completeLife / 2) {
-            this.speed = 5;
+            this.speed = 8;
             this.times.direction = 1600;
             this.times.jump = 8000;
+            this.fireRate = 1000 / globals.game.fps * 9;
         }
         if (this.life < this.completeLife / 4) {
-            this.speed = 7;
+            this.speed = 12;
             this.times.direction = 1200;
             this.times.jump = 3000;
+            this.fireRate = 1000 / globals.game.fps * 6;
         }
 
     };
