@@ -20,6 +20,10 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         }
     };
 
+    Level.prototype.isOver = function (time) {
+        return typeof this.duration !== 'undefined' && time > this.duration;
+    };
+
     Level.prototype.pickEnemy = function() {
         var oldAcc, probAcc = 0;
         var select  = Math.random();

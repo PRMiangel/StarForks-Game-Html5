@@ -44,8 +44,8 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
         var self = this;
 
         this.currentTime += msDuration;
-        if (typeof this.level.duration !== 'undefined' && this.currentTime > this.level.duration) {
-            this.currentLevel += 1;
+        if (this.level.isOver(this.currentTime)) {
+             this.currentLevel += 1;
             this.currentTime   = 0;
             this.level         = levels.get(this.currentLevel);
             // maybe upgrade score.
