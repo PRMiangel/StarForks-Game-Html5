@@ -94,7 +94,7 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
                 self.player.ammoRatio -= 1;
                 if (self.player.ammoRatio === 0) self.player.ammoRatio = 1;
             }
-            enemy.kill();
+            enemy.getDamage(20);
         });
 
         // update score.
