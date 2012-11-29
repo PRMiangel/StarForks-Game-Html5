@@ -43,8 +43,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         BossLevel.superConstructor.apply(this, arguments);
         this.boss = null;
         this.bossLife = 0;
-        this.init = 0;
-        this.maxEnemies = 0;
+        this.init = 5000;
+        this.maxEnemies = 3;
         this.enemies = [
             {type: foes.Meteor, prob: 1}
         ];
@@ -60,21 +60,24 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
             this.bossLife = this.boss.life;
             world.enemies.add(this.boss);
         }
-        // if (this.boss.life < this.bossLife / 2)
-        //     // shoot more meteors
-        //     this.maxEnemies = 6;
-        // if (this.boss.life < this.bossLife / 4)
-        //     this.enemies = [
-        //         {type: foes.Meteor, prob: .7},
-        //         {type: foes.Explorer, prob: .3}
-        //     ];
-        // var enemy;
-        // while (world.enemies.sprites().length < this.maxEnemies) {
-        //     enemy = this.pickEnemy();
-        //     enemy = new enemy.type();
-        //     enemy.setInitialPosition();
-        //     world.enemies.add(enemy);
-        // }
+        if (this.boss.life < this.bossLife * 3 / 4)
+            // shoot more meteors
+            this.maxEnemies = 5;
+        if (this.boss.life < this.bossLife / 2)
+            this.enemies = [
+                {type: foes.Meteor, prob: .7},
+                {type: foes.Explorer, prob: .3}
+            ];
+        if (this.boss.life < this.bossLife / 4)
+            this.maxEnemies = 7;
+
+        var enemy;
+        while (world.enemies.sprites().length < this.maxEnemies) {
+            enemy = this.pickEnemy();
+            enemy = new enemy.type();
+            enemy.setInitialPosition();
+            world.enemies.add(enemy);
+        }
     };
 
     BossLevel.prototype.isOver = function (time) {
