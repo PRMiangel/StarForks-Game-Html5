@@ -26,7 +26,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         // enemy sprite.
         this.speed    = speed;
         this.life     = life;
-        this.firingSpeed = 75;  // it may be a good idea to relate this to the enemy's speed.
+        this.firingSpeed = 50;  // it may be a good idea to relate this to the enemy's speed.
 
         // firing
         this.fireRate = fireRate;
