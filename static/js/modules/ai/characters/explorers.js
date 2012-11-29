@@ -32,14 +32,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         this.fireRate = fireRate;
         this.nextFire = Math.random() * this.fireRate;
     };
-    gamejs.utils.objects.extend(Explorer, enemy.Enemy);
-
-    Explorer.prototype.canShoot = function(msDuration) {
-        if (this.rect.center > globals.game.screenSize[0]) return;
-
-        this.nextFire -= msDuration;
-        return this.nextFire < 0;
-    };
+    gamejs.utils.objects.extend(Explorer, enemy.ShooterEnemy);
 
     Explorer.prototype.shoot = function() {
         this.nextFire = this.fireRate;
@@ -78,7 +71,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         HeavyExplorer.superConstructor.apply(this, args.concat([
             globals.enemies.images.heavyexplorer,
             utils.randomBetween(0.9, 1, false) * 6,
-            5,
+            7,
             1000 / globals.game.fps * 40
         ]));
         this.rotation = Math.random() * Math.PI / 2048 * (Math.random() < 0.5 ? 1 : -1);  // ugh;

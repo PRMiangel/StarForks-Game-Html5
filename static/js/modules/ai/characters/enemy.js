@@ -36,9 +36,27 @@ define(['gamejs', 'modules/globals'], function(gamejs, globals) {
     };
 
 
+    /*
+     * ShooterEnemy.
+     * This ones can shoot lasers.
+     */
+    var ShooterEnemy = function() {
+        ShooterEnemy.superConstructor.apply(this, arguments);
+    };
+    gamejs.utils.objects.extend(ShooterEnemy, Enemy);
+
+    ShooterEnemy.prototype.canShoot = function(msDuration) {
+        if (this.rect.center > globals.game.screenSize[0]) return;
+        this.nextFire -= msDuration;
+        return this.nextFire < 0;
+    };
+
+
+
     //
     // Return API
     return {
-        Enemy: Enemy
+        Enemy: Enemy,
+        ShooterEnemy: ShooterEnemy
     };
 });
