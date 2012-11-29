@@ -92,7 +92,8 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
         _.each(gamejs.sprite.spriteCollide(this.player, this.enemies, false, gamejs.sprite.collideMask), function(enemy) {
             if (!self.player.isPushing()) {
                 self.gameOver = self.player.getDamage();
-                self.player.ammoRatio = 1;
+                self.player.ammoRatio -= 1;
+                if (self.player.ammoRatio === 0) self.player.ammoRatio = 1;
             }
             enemy.kill();
         });
