@@ -29,7 +29,9 @@ define(function() {
             images: {
                 explorer: 'static/images/enemies/explorer.png',
                 heavyexplorer: 'static/images/enemies/heavyExplorer.png',
-                meteor: 'static/images/enemies/meteorBig.png'
+                meteor: 'static/images/enemies/meteorBig.png',
+                raider: 'static/images/enemies/raider.png',
+                heavyraider: 'static/images/enemies/heavyRaider.png'
             },
             laserSprite: 'static/images/laserRed.png'
         },

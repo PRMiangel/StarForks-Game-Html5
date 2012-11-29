@@ -1,9 +1,10 @@
 define(
     [
         'modules/ai/characters/meteor',
-        'modules/ai/characters/explorers'
+        'modules/ai/characters/explorers',
+        'modules/ai/characters/raiders'
     ],
-    function(meteor, explorers) {
+    function(meteor, explorers, raiders) {
         /*
          * This is basically a proxy module for all the enemies in the
          * static/js/modules/ai/enemies/ lib
@@ -15,6 +16,8 @@ define(
         return {
             Explorer: explorers.Explorer,
             HeavyExplorer: explorers.HeavyExplorer,
-            Meteor: meteor.Meteor
+            Meteor: meteor.Meteor,
+            Raider: raiders.Raider,
+            HeavyRaider: raiders.HeavyRaider
         };
     });
