@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/objects/laser', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, enemy, globals, laser, utils, $m, $v) {
+define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/objects/weapon', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, enemy, globals, weapon, utils, $m, $v) {
     /*
      * Explorer ship.
      * Really dumb ships that fire just once in a while and move straight
@@ -36,7 +36,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
 
     Explorer.prototype.shoot = function() {
         this.nextFire = this.fireRate;
-        return new laser.Laser(
+        return new weapon.Laser(
             globals.enemies.laserSprite, this.rect.center, this.orientation,
             { 'speed': this.firingSpeed }
         );

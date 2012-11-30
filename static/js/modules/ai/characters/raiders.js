@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/objects/laser', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, enemy, globals, laser, utils, $m, $v) {
+define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/objects/weapon', 'modules/helpers/utils', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, enemy, globals, weapon, utils, $m, $v) {
     /*
      * Raider ship.
      * A fast ship that can shoot two lasers at a time.
@@ -43,7 +43,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
 
         this.firingSide = (this.firingSide + 1) % 2;
 
-        return new laser.Laser(
+        return new weapon.Laser(
             globals.enemies.laserSprite, position, this.orientation,
             { 'speed': this.firingSpeed }
         );

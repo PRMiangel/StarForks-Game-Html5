@@ -1,4 +1,4 @@
-define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, laser, globals, spriteSheet, $m, $v) {
+define(['gamejs', 'modules/objects/weapon', 'modules/globals', 'modules/helpers/sprite_sheet', 'gamejs/utils/math', 'gamejs/utils/vectors'], function(gamejs, weapon, globals, spriteSheet, $m, $v) {
 
     var BASE_SPRITE_ORIENTATION = [0, -1];
     var LASER_TYPES = [
@@ -231,7 +231,7 @@ define(['gamejs', 'modules/objects/laser', 'modules/globals', 'modules/helpers/s
                         this.fireDeviation = this.fireDeviation == 0 ? 30 : -this.fireDeviation;
                 }
                 this.lasers.add(
-                    new laser.Laser(
+                    new weapon.Laser(
                         this.isPushing() ? globals.player.coolLaserSprite : globals.player.laserSprite,
                         $v.add(this.position, [this.fireDeviation * Math.cos(this.orientation), this.fireDeviation * Math.sin(this.orientation)]),
                         this.orientation,
