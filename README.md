@@ -1,7 +1,9 @@
 # StarForks - a simple html5 game.
 
-A simple space battleship game where you can collect powerups that
-somehow resemble git verbs.
+A simple space battleship game where you can collect powerups that somehow
+resemble git verbs, and use them to fight your enemies! It's a 2D game with
+infinite levels where you get scored by the distance/time you stay alive, your
+accuracy and the enemies you kill.
 
 <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/screenshot.png" style="border:0;" />
 
