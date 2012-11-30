@@ -1,7 +1,9 @@
 # StarForks - a simple html5 game.
 
-This is a simple space battleship game where you can collect powerups that
+A simple space battleship game where you can collect powerups that
 somehow resemble git verbs.
+
+<img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/screenshot.png" style="border:0;" />
 
 To play the game just go to:
 [http://volrath.github.com/game-off-2012](volrath.github.com/game-off-2012).
@@ -13,6 +15,18 @@ version of [GameJS](http://gamejs.org) that is
 [AMD](http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition) compliant
 and has some bugfixes that I will try to contribute to the project later. I used
 [RequireJS](http://requirejs.org) as the AMD implementation.
+
+If you want to run this project locally, just clone the source code and open
+index.html in your browser of choice (Only tested it Chrome and Firefox).
+
+You would have to make sure to serve the files using a http server and not just
+try to open it from you hard drive (file://). If you have Python installed (who
+doesn't?), you can just use:
+
+    cd path/to/source
+    python -m SimpleHTTPServer 8080
+
+Open http://localhost:8080 and have fun!
 
 ### Open Source projects used
 
