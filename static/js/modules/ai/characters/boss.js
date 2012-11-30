@@ -34,6 +34,7 @@ define(['gamejs', 'modules/ai/characters/raiders', 'modules/globals', 'modules/o
 
         this.direction = utils.randomBetween(0, 1) ? 1 : -1;
         this.appearing = 0;
+        this.killScore = 5000;
     };
     gamejs.utils.objects.extend(Boss, raiders.HeavyRaider);
 

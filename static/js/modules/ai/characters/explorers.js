@@ -31,6 +31,8 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         // firing
         this.fireRate = fireRate;
         this.nextFire = Math.random() * this.fireRate;
+
+        this.killScore = 5;
     };
     gamejs.utils.objects.extend(Explorer, enemy.ShooterEnemy);
 
@@ -75,6 +77,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
             1000 / globals.game.fps * 40
         ]));
         this.rotation = Math.random() * Math.PI / 2048 * (Math.random() < 0.5 ? 1 : -1);  // ugh;
+        this.killScore = 10;
     };
     gamejs.utils.objects.extend(HeavyExplorer, Explorer);
 

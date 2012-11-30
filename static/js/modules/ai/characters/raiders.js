@@ -33,6 +33,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         this.nextFire = Math.random() * this.fireRate;
         this.firingSide = 0;  // 0: left; 1: right
         this.fireDeviation = fireDeviation;
+        this.killScore = 15;
     };
     gamejs.utils.objects.extend(Raider, enemy.ShooterEnemy);
 
@@ -76,6 +77,7 @@ define(['gamejs', 'modules/ai/characters/enemy', 'modules/globals', 'modules/obj
         ]));
 
         this.appearing = 4000;
+        this.killScore = 20;
     };
     gamejs.utils.objects.extend(HeavyRaider, Raider);
 
