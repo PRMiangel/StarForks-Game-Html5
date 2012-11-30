@@ -5,7 +5,7 @@ resemble git verbs, and use them to fight your enemies! It's a 2D game with
 infinite levels where you get scored by the distance/time you stay alive, your
 accuracy and the enemies you kill.
 
-<img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/screenshot.png" style="border:0;" />
+<img src="https://raw.github.com/volrath/game-off-2012/master/static/images/screenshot.png" style="border:0;" />
 
 To play the game just go to:
 [http://volrath.github.com/game-off-2012](volrath.github.com/game-off-2012).
