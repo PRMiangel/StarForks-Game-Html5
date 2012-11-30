@@ -74,7 +74,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/ai/foes'], function(
         var enemy;
         while (world.enemies.sprites().length < this.maxEnemies) {
             enemy = this.pickEnemy();
-            enemy = new enemy.type();
+            enemy = new enemy.type(this);
             enemy.setInitialPosition();
             world.enemies.add(enemy);
         }
