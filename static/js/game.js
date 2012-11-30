@@ -33,6 +33,7 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
         $('div.wrapper').fadeOut('fast', function () {
             $('#gjs-canvas').fadeIn('fast', function () {
                 $('#back-to-page').removeClass('hide');
+                $('#github-ribbon').addClass('hide');
                 gamejs.ready(main);
             });
         });
