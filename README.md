@@ -63,7 +63,7 @@ A I said before, every powerup is a git verb and does something related to it.
 * <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/forking.png" style="border:0;" /> **Forking**: will get you more fork (ammo) power.
 * <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/branching.png" style="border:0;" /> **Branching**: will branch your laser guns.
 * <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/pulling.png" style="border:0;" /> **Pulling**: will automatically pull to you every powerup you see for a limited time.
-* <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/pushing.png" style="border:0;" /> **Pushing**: Nothing will stop you, you whill push enemies and lasers away.
+* <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/pushing.png" style="border:0;" /> **Pushing**: Nothing will stop you, you will push enemies and lasers away.
 * <img src="https://raw.github.com/volrath/game-off-2012/master/static/images/powerups/stashing.png" style="border:0;" /> **Stashing**: will stash a new powerful missile.
 
 ## More information
