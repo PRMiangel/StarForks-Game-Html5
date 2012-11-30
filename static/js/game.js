@@ -28,6 +28,13 @@ require(['jquery', 'gamejs', 'modules/main', 'modules/globals'], function($, gam
 
     gamejs.preload(images);
 
-    globals.screenSize = [$('gjs-canvas').attr('width'), $('gjs-canvas').attr('height')];
-    gamejs.ready(main);
+    $('#play').click(function (e) {
+        e.preventDefault();
+        $('div.wrapper').fadeOut('fast', function () {
+            $('#gjs-canvas').fadeIn('fast', function () {
+                $('#back-to-page').removeClass('hide');
+                gamejs.ready(main);
+            });
+        });
+    });
 });

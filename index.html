@@ -7,13 +7,128 @@
     <meta name="robots" content="index, follow">
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <title>Space Ships #ggo12</title>
+    <title>StarForks #ggo12 - A simple spaceships battle game.</title>
 
+    <link type="text/css" rel="stylesheet" media="all" href="static/css/grid.css" />
     <link type="text/css" rel="stylesheet" media="all" href="static/css/screen.css" />
     <script data-main="static/js/game" src="static/js/libs/require.js/require-2.1.1.js"></script>
   </head>
   <body>
-    <!-- <h1>Space Ship Game</h1> -->
-    <canvas id="gjs-canvas" width="940" height="480"></canvas>
+    <canvas id="gjs-canvas" width="100%" height="100%"></canvas>
+    <div class="wrapper">
+      <header>
+        <h1>StarForks</h1>
+        <p>
+          A simple html5 game made for
+          the <a href="http://github.com/github/game-off-2012/"
+                 target="blank">github game off 2012</a>
+          using <a href="http://gamejs.org">GameJS</a>. The code
+          is <a href="http://github.com/volrath/game-off-2012/"
+                target="blank">open sourced</a>.
+          <br />
+          If you want more technical information check
+          the <a href="https://github.com/volrath/game-off-2012/blob/master/README.md"
+                 target="blank">README file</a>. Also, read
+          the <a href="#credits">Credits</a> =).
+        </p>
+      </header>
+
+      <div class="page-container container_12">
+        <a href="#" id="play">Play It!</a>
+
+        <div>
+          <section class="controls grid_5 alpha">
+            <h2>Controls</h2>
+            <table>
+              <tr>
+                <td><strong>W/S/A/D:</strong></td>
+                <td>Move</td>
+              </tr>
+              <tr>
+                <td><strong>Mouse:</strong></td>
+                <td>Aim</td>
+              </tr>
+              <tr>
+                <td><strong>Mouse Left Button:</strong></td>
+                <td>Shoot</td>
+              </tr>
+              <tr>
+                <td><strong>ESC:</strong></td>
+                <td>Pause/Unpause</td>
+              </tr>
+            </table>
+          </section>
+          <section class="powerups grid_5 omega push_2">
+            <h2>PowerUps</h2>
+            <ul>
+              <li class="cloning">
+                <h3>Cloning</h3>
+                <p>You will clone a new life.</p>
+              </li>
+              <li class="forking">
+                <h3>Forking</h3>
+                <p>Your forking power will increase (+1 ammo)</p>
+              </li>
+              <li class="branching">
+                <h3>Branching</h3>
+                <p>Branch your laser guns</p>
+              </li>
+              <li class="pulling">
+                <h3>Pulling</h3>
+                <p>Pull every other powerup around you</p>
+              </li>
+              <li class="pushing">
+                <h3>Pushing</h3>
+                <p>Your enemies will be afraid of you, believe me.</p>
+              </li>
+              <!-- <li class="stashing"> -->
+              <!--   <h3>Stashing</h3> -->
+              <!--   <p>Stash a secret weapon!</p> -->
+              <!-- </li> -->
+            </ul>
+          </section>
+          <section id="credits" class="credits grid_12">
+
+            <h2>Credits</h2>
+
+            I used a lot of open sourced things and this is where I say thanks.
+
+            <ul class="grid_10 push_1">
+              <li>
+                <strong><a href="http://gamejs.org" target="blank">GameJS</a>:</strong> a helpful javascript library for game
+                development built by Simon Oberhammer.
+              </li>
+              <li>
+                <strong>Graphic Art:</strong> I built this game
+                using <a href="http://www.kenney.nl" target="blank">Kenney
+                Vleugels</a>' space package. This guy is awesome! seriously,
+                please check out his site
+                and <a href="http://opengameart.org/users/kenney"
+                target="blank">his contributions to OpenGameArt.org</a>.
+              </li>
+              <li>
+                <strong><a href="http://opengameart.org"
+                target="blank">OpenGameArt.org</a>:</strong> This site helped a
+                lot for inspiration.
+              </li>
+              <li>
+                Special thanks to Andrés Salazar, who helped me with the music
+                (which is not up yet, but will be) and found some bugs for me.
+              </li>
+              <li>
+                Special thanks to Alfonso Ros, who helped me create the awesome
+                Boss Ship and gave me some ideas for the game.
+              </li>
+            </ul>
+
+          </section>
+        </div>
+      </div>
+      <div id="push"></div>
+    </div>
+    <footer>
+      <p>Daniel Barreto (c) 2012 - <a href="http://volrath.github.com">volrath.github.com</a></p>
+      <a href="." id="back-to-page" class="hide"><< Go Back</a>
+                                                    </footer>
   </body>
 </html>
