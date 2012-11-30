@@ -127,8 +127,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
         this.maxRadius = 300;
         this.explosionTime = 0;
         this.animationTime = 400;
-        this.strength = 50;
         Missile.superConstructor.apply(this, arguments);
+        this.strength = 150;
     };
     gamejs.utils.objects.extend(Missile, Weapon);
 
