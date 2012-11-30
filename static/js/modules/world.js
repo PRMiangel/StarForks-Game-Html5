@@ -93,6 +93,10 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
             var missile = collision.a,
                 enemy   = collision.b;
             if (!enemy.canGetDamage()) return;
+            if (enemy.speedLine !== undefined) {  // enemy is a laser, kill it and continue
+                enemy.kill();
+                return;
+            }
             if (!missile.exploded) missile.explote();
             self.score += enemy.getDamage(missile.doDamage($v.distance(missile.rect.center, enemy.rect.center)));
             self.accuracy[1] += 1;
