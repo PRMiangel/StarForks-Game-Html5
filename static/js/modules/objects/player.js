@@ -74,7 +74,12 @@ define(['gamejs', 'modules/objects/weapon', 'modules/globals', 'modules/helpers/
         this.fireDeviation = 0;
         this.ammoRatio = 1;
         this.ammoStrength = 1;
-        this.missiles = 0;
+        this.missiles = new gamejs.sprite.Group();
+        this.missileStash = 0;
+        this.launchingMissile = false;
+        this.missileLaunched = false;
+        this.missileRate = globals.game.fps * 20;
+        this.missileNext = 0;
 
         // powers
         this.pulling = 0;
@@ -111,8 +116,9 @@ define(['gamejs', 'modules/objects/weapon', 'modules/globals', 'modules/helpers/
             display.blit(pushingCircle, $v.add(this.rect.center, [-radius, -radius]));
         }
 
-        // draw the lasers
+        // draw the lasers and missiles
         this.lasers.draw(display);
+        this.missiles.draw(display);
 
         // draw the player.
         display.blit(this.surface, $v.add(this.position, [-this.surface.getSize()[0]/2, -this.surface.getSize()[1]/2]));
@@ -130,7 +136,9 @@ define(['gamejs', 'modules/objects/weapon', 'modules/globals', 'modules/helpers/
             event.type !== gamejs.event.MOUSE_DOWN && event.type !== gamejs.event.MOUSE_UP &&
             event.type !== gamejs.event.MOUSE_MOTION)
             return;
-        if (event.type === gamejs.event.KEY_DOWN) {
+        if (event.type === gamejs.event.KEY_DOWN && event.key === gamejs.event.K_SPACE) { // new missile!
+            this.launchingMissile = true;
+        } else if (event.type === gamejs.event.KEY_DOWN) {
             if (event.key === gamejs.event.K_a) this.directions[0] -= 1;
             if (event.key === gamejs.event.K_d) this.directions[0] += 1;
             if (event.key === gamejs.event.K_s) this.directions[1] += 1;
@@ -242,6 +250,22 @@ define(['gamejs', 'modules/objects/weapon', 'modules/globals', 'modules/helpers/
             }
         } else this.fireRate -= msDuration;
         this.lasers.update();
+
+        //
+        // missiles
+        this.missileLaunched = false;
+        this.missileNext -= msDuration;
+        if (this.launchingMissile && this.missileNext < 0 && this.missileStash > 0) {
+            this.missileNext = this.missileRate;
+            this.missiles.add(
+                new weapon.Missile(
+                    globals.player.missileSprite, this.position, this.orientation, {speed: 40}
+                )
+            );
+            this.missileStash--;
+            this.launchingMissile = false;
+        }
+        this.missiles.update(msDuration);
     };
 
     Player.prototype.linearMovement = function(time) {

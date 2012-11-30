@@ -122,12 +122,56 @@ define(['underscore', 'gamejs', 'modules/globals', 'modules/helpers/utils', 'gam
      * -------------------------------------------------------------------------
      */
     var Missile = function(spriteUrl, position, orientation) {
+        this.exploded = false;
+        this.radius = 1;
+        this.maxRadius = 300;
+        this.explosionTime = 0;
+        this.animationTime = 400;
+        this.strength = 50;
+        Missile.superConstructor.apply(this, arguments);
     };
     gamejs.utils.objects.extend(Missile, Weapon);
 
+    Missile.prototype.doDamage = function (distance) {
+        if (distance > this.radius) return 0;
+        return (this.maxRadius - distance) * this.strength / this.maxRadius;
+    };
+
+    Missile.prototype.draw = function (surface) {
+        if (!this.exploded)
+            return Weapon.prototype.draw.call(this, surface);
+        var explosionCircle = new gamejs.Surface(this.rect);
+        gamejs.draw.circle(explosionCircle, '#75CB3B', [this.radius, this.radius], this.radius);
+        explosionCircle.setAlpha(this.explosionTime / this.animationTime);
+        surface.blit(explosionCircle, $v.add(this.rect.center, [-this.radius, -this.radius]));
+    };
+
+    Missile.prototype.explote = function () {
+        this.exploded = true;
+    };
+
+    Missile.prototype.update = function (msDuration) {
+        if (!this.exploded)
+            return Weapon.prototype.update.call(this, msDuration);
+
+        this.explosionTime += msDuration;
+        if (this.explosionTime > this.animationTime) {
+            this.kill();
+            return;
+        }
+        this.radius = this.maxRadius * this.explosionTime / this.animationTime;
+        var center = this.rect.center;
+        this.rect.width  = this.radius * 2;
+        this.rect.height = this.radius * 2;
+        this.rect.center = center;
+        return;
+    };
 
 
     //
     // return API
-    return { Laser: Laser };
+    return {
+        Laser: Laser,
+        Missile: Missile
+    };
 });

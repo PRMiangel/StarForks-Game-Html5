@@ -1,4 +1,4 @@
-define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', 'modules/objects/powerups', 'modules/helpers/utils'], function(_, gamejs, levels, $p, powerups, utils) {
+define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', 'modules/objects/powerups', 'modules/helpers/utils', 'gamejs/utils/vectors'], function(_, gamejs, levels, $p, powerups, utils, $v) {
     /*
      * What the world needs to control:
      * 1. updating levels
@@ -85,6 +85,17 @@ define(['underscore', 'gamejs', 'modules/ai/levels', 'modules/objects/player', '
             laser.kill();
             self.score += enemy.getDamage(laser.strength);
             self.accuracy[1] += self.player.isPushing() ? 0 : 1;
+
+            if (enemy.isDead() && Math.random() < .15)
+                self.powerups.add(new powerups.Powerup(enemy.rect.center));
+        });
+        _.each(gamejs.sprite.groupCollide(this.player.missiles, this.enemies, false, false), function(collision) {
+            var missile = collision.a,
+                enemy   = collision.b;
+            if (!enemy.canGetDamage()) return;
+            if (!missile.exploded) missile.explote();
+            self.score += enemy.getDamage(missile.doDamage($v.distance(missile.rect.center, enemy.rect.center)));
+            self.accuracy[1] += 1;
 
             if (enemy.isDead() && Math.random() < .15)
                 self.powerups.add(new powerups.Powerup(enemy.rect.center));

@@ -85,8 +85,8 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
 
         // missiles
         surfaces.stashing.blit(missileSprite);
-        surfaces.stashing.blit(fonts.mini.render('x ' + world.player.missiles, '#FFFFFF'), [55, 55]);
-        surfaces.stashing.setAlpha(world.player.missiles > 0 ? 0.25 : 0.75);
+        surfaces.stashing.blit(fonts.mini.render('x ' + world.player.missileStash, '#FFFFFF'), [55, 55]);
+        surfaces.stashing.setAlpha(world.player.missileStash > 0 ? 0.25 : 0.75);
 
         // score
         var score = fonts.small.render(world.score, '#FFFFFF');
@@ -132,7 +132,7 @@ define(['underscore', 'gamejs', 'modules/globals', 'gamejs/utils/vectors'], func
      */
     var init = function() {
         lifeSprite    = gamejs.image.load(globals.player.lifeSprite);
-        missileSprite = gamejs.transform.rotate(gamejs.image.load(globals.player.missileSprite), 180);
+        missileSprite = gamejs.image.load(globals.player.missileSprite);
         fonts = {
             big: new gamejs.font.Font('64px Aller'),
             small: new gamejs.font.Font('24px Aller'),

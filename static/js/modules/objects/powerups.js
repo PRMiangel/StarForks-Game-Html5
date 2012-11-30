@@ -93,7 +93,7 @@ define(['gamejs', 'modules/globals', 'modules/helpers/utils', 'gamejs/utils/math
      * Stashing: player will stash a really cool misil.
      */
     Powerup.prototype.stash = function(player) {
-        player.missiles++;
+        player.missileStash++;
         return true;
     };
 
